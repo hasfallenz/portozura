@@ -47,7 +47,65 @@ const certificates = [
   { id: 6, title: "Sertifikat 6", imageUrl: "" },
 ];
 
-const doubledSkills = [...techSkills, ...techSkills];
+const getSkillIcon = (name) => {
+  switch (name) {
+    case 'React':
+      return (
+        <svg viewBox="-11.5 -10.23174 23 20.46348" className="w-10 h-10 sm:w-12 sm:h-12 text-[#61DAFB] fill-none stroke-current stroke-[1.2] transition-transform duration-700 group-hover:rotate-180">
+          <circle cx="0" cy="0" r="2.05" fill="currentColor" />
+          <g stroke="currentColor" fill="none">
+            <ellipse rx="11" ry="4.2" />
+            <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+            <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+          </g>
+        </svg>
+      );
+    case 'Laravel':
+      return (
+        <svg viewBox="0 0 512 512" className="w-10 h-10 sm:w-12 sm:h-12 text-[#FF2D20] fill-current transition-transform duration-500 group-hover:scale-110">
+          <path d="M439 122.3l-123.5-70c-15.5-8.8-35.5-8.8-51 0L141 122.3c-15.5 8.8-25.5 25.3-25.5 43v140c0 17.7 10 34.2 25.5 43l123.5 70c15.5 8.8 35.5 8.8 51 0l123.5-70c15.5-8.8 25.5-25.3 25.5-43v-140c0-17.7-10-34.2-25.5-43zM270 410.7l-120-68V210.7l120 68v132zm20-164l-120-68 120-68 120 68-120 68zm120 96l-120 68V278.7l120-68v132z" />
+        </svg>
+      );
+    case 'Python':
+      return (
+        <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 transition-transform duration-500 group-hover:rotate-12">
+          <path d="M12.002 2c-5.522 0-5.002 4.757-5.002 4.757h5.002v1.486H5.048S2 7.828 2 12.824c0 4.996 2.762 5.178 2.762 5.178h1.644v-2.3c0-2.485 2.025-2.485 2.025-2.485h5.571s2.002 0 2.002-1.939V6.757C16.004 2.81 12.002 2 12.002 2z" fill="#3776AB" />
+          <path d="M11.998 22c5.522 0 5.002-4.757 5.002-4.757H11.99v-1.486h6.96s3.048.415 3.048-4.581c0-4.996-2.762-5.178-2.762-5.178h-1.644v2.3c0 2.485-2.025 2.485-2.025 2.485H9.996s-2.002 0-2.002 1.939v5.571c0 3.947 4.002 4.757 4.002 4.757z" fill="#FFD43B" />
+          <circle cx="9.002" cy="5.25" r="0.75" fill="#fff" />
+          <circle cx="15.002" cy="18.75" r="0.75" fill="#fff" />
+        </svg>
+      );
+    case 'Next.js':
+      return (
+        <svg viewBox="0 0 180 180" className="w-10 h-10 sm:w-12 sm:h-12 text-white fill-current transition-transform duration-500 group-hover:scale-110">
+          <circle cx="90" cy="90" r="90" fill="#000" stroke="#334155" strokeWidth="4" />
+          <path d="M140 138L85 64H73V116H81V76L130 138H140Z" fill="#fff" />
+          <path d="M115 64H123V116H115V64Z" fill="url(#next-gradient)" />
+          <defs>
+            <linearGradient id="next-gradient" x1="119" y1="64" x2="119" y2="116" gradientUnits="userSpaceOnUse">
+              <stop stopColor="white" />
+              <stop offset="1" stopColor="white" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+        </svg>
+      );
+    case 'Tailwind CSS':
+      return (
+        <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 text-[#38BDF8] fill-current transition-transform duration-500 group-hover:skew-x-6">
+          <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.002 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.513 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.336 13.382 8.975 12 6.001 12z" />
+        </svg>
+      );
+    case 'Node.js':
+      return (
+        <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 text-[#68a063] fill-current transition-transform duration-500 group-hover:scale-110">
+          <path d="M12 1L3 6.2v10.4L12 23l9-5.2V6.2L12 1zm7 14.4l-7 4-7-4V7.8l7-4 7 4v7.6z M12 6c-.8 0-1.5.7-1.5 1.5S11.2 9 12 9s1.5-.7 1.5-1.5S12.8 6 12 6zm0 4.5c-.8 0-1.5.7-1.5 1.5v3c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5v-3c0-.8-.7-1.5-1.5-1.5z" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+};
+
 
 export default function App() {
   const [currentGreetingIndex, setCurrentGreetingIndex] = useState(0);
@@ -69,16 +127,16 @@ export default function App() {
     if (currentGreetingIndex < greetings.length - 1) {
       const timer = setTimeout(() => {
         setCurrentGreetingIndex(prev => prev + 1);
-      }, 120);
+      }, 260);
       return () => clearTimeout(timer);
     } else {
       const timer = setTimeout(() => {
         setAnimateOut(true);
         const closeTimer = setTimeout(() => {
           setShowSplash(false);
-        }, 800);
+        }, 1000);
         return () => clearTimeout(closeTimer);
-      }, 300);
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [currentGreetingIndex]);
@@ -141,8 +199,8 @@ export default function App() {
           pointerEvents: animateOut ? 'none' : 'all',
           visibility: showSplash ? 'visible' : 'hidden',
           transition: animateOut
-            ? 'transform 0.8s cubic-bezier(0.85,0,0.15,1), opacity 0.8s ease'
-            : 'background-color 0.12s ease',
+            ? 'transform 1.0s cubic-bezier(0.85,0,0.15,1), opacity 1.0s ease'
+            : 'background-color 0.26s ease',
           willChange: 'transform',
         }}
       >
@@ -151,7 +209,7 @@ export default function App() {
             className="text-4xl sm:text-5xl md:text-6xl font-black tracking-wider mb-2"
             style={{
               color: current.textColor,
-              transition: 'color 0.12s ease',
+              transition: 'color 0.26s ease',
             }}
           >
             {current.text}
@@ -359,61 +417,47 @@ export default function App() {
             </div>
           </div>
 
-          {/* TECH SKILLS MARQUEE */}
+          {/* TECH SKILLS GRID */}
           <div className="mt-16 md:mt-20">
-            <div className="text-center mb-8">
+            <div className="text-center mb-10">
               <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">Tech Stack</span>
               <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">Teknologi yang Saya Kuasai</h3>
+              <p className="text-slate-500 text-sm mt-2">Kumpulan teknologi modern yang aktif saya gunakan dalam membangun aplikasi</p>
             </div>
 
-            <div className="relative overflow-hidden py-3">
-              <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none" />
-              <div
-                className="flex gap-3"
-                style={{
-                  animation: 'marquee-left 30s linear infinite',
-                  width: 'max-content',
-                }}
-              >
-                {doubledSkills.map((skill, i) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto px-2 sm:px-4">
+              {techSkills.map((skill) => (
+                <div
+                  key={skill.name}
+                  className="group relative bg-slate-900/40 border border-slate-900 hover:border-slate-800 rounded-3xl p-5 sm:p-6 flex flex-col items-center justify-center gap-4 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/40 overflow-hidden"
+                >
+                  {/* Glowing background on hover */}
                   <div
-                    key={i}
-                    className="flex items-center gap-2 px-4 py-2 bg-slate-900/60 border border-slate-800 rounded-full whitespace-nowrap"
+                    className="absolute inset-0 opacity-0 group-hover:opacity-[0.06] transition-opacity duration-300 blur-xl pointer-events-none"
+                    style={{
+                      backgroundColor: skill.color,
+                    }}
+                  />
+                  
+                  {/* Icon Wrapper */}
+                  <div 
+                    className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-center transition-all duration-300 group-hover:border-slate-700"
                   >
-                    <span
-                      className="w-2 h-2 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: skill.color, boxShadow: `0 0 6px ${skill.color}80` }}
-                    />
-                    <span className="text-xs sm:text-sm font-semibold text-slate-300">{skill.name}</span>
+                    {getSkillIcon(skill.name)}
                   </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden py-3 mt-2">
-              <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none" />
-              <div
-                className="flex gap-3"
-                style={{
-                  animation: 'marquee-right 35s linear infinite',
-                  width: 'max-content',
-                }}
-              >
-                {[...doubledSkills].reverse().map((skill, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-2 px-4 py-2 bg-slate-900/40 border border-slate-800/60 rounded-full whitespace-nowrap"
-                  >
-                    <span
-                      className="w-2 h-2 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: skill.color, boxShadow: `0 0 6px ${skill.color}80` }}
+                  
+                  {/* Name and color underline */}
+                  <div className="text-center relative z-10 space-y-2">
+                    <h4 className="font-extrabold text-white text-sm sm:text-base tracking-wide group-hover:text-emerald-400 transition-colors duration-300">
+                      {skill.name}
+                    </h4>
+                    <span 
+                      className="block mx-auto w-3 h-0.5 rounded-full transition-all duration-300 group-hover:w-10"
+                      style={{ backgroundColor: skill.color }}
                     />
-                    <span className="text-xs sm:text-sm font-semibold text-slate-400">{skill.name}</span>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -467,11 +511,11 @@ export default function App() {
               
               {[
                 {
-                  title: "Web Developer",
-                  company: "Proyek Mandiri",
-                  date: "2024",
+                  title: "Web Developer (Tugas Kampus)",
+                  company: "Laravel + XAMPP",
+                  date: "2026",
                   active: true,
-                  desc: "Pernah membuat aplikasi berbasis web untuk mengelola data buku dan peminjaman perpustakaan"
+                  desc: "Membuat aplikasi berbasis web untuk mengelola data buku dan peminjaman perpustakaan menggunakan framework Laravel dan web server XAMPP."
                 },
               ].map((job, i) => (
                 <div key={i} className="relative">
