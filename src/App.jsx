@@ -709,7 +709,7 @@ export default function App() {
                 <ChevronRight size={18} className="text-slate-500 group-hover:text-emerald-400 flex-shrink-0 ml-2" />
               </a>
 
-              <a href="https://instagram.com/has.fallenz" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-850 rounded-2xl hover:border-pink-500/20 transition-all duration-300 group">
+              <a href="https://instagram.com/has.fallenz" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-900 rounded-2xl hover:border-pink-500/20 transition-all duration-300 group">
                 <div className="flex items-center space-x-3 min-w-0">
                   <div className="p-2.5 sm:p-3 bg-pink-500/10 text-pink-400 rounded-xl flex-shrink-0">
                     <Instagram size={20} />
