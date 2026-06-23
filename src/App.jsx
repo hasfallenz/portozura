@@ -120,12 +120,13 @@ const translations = {
     contactBtn: "Kontak Saya",
     aboutSmall: "Tentang Saya",
     aboutTitle: "I AM",
-    aboutP1: "Saya adalah seorang Fullstack Developer profesional yang berbasis di Indonesia. Saya berspesialisasi dalam merancang aplikasi web berskala besar, cepat, serta mudah dikelola. Dengan keahlian di bidang frontend modern dan arsitektur backend yang kokoh, saya berusaha keras memberikan solusi digital terbaik yang mulus bagi pengguna.",
-    aboutP2: "Sejak memulai perjalanan saya di bidang rekayasa perangkat lunak, saya terus mempelajari teknologi baru guna mengikuti perkembangan industri yang serba cepat. Saya fokus menulis kode yang bersih, terdokumentasi dengan baik, dan memprioritaskan performa situs.",
+    aboutP1: "Hai, saya Zufa Rahmat Ramadhan, saya biasa di panggil zura oleh kawan-kawan saya. Saya Mahasiswa Semester 5 di Universitas Muhammadiyah Tangerang. Alasan saya ambil jurusan Teknik Informatika karena saya tertarik untuk mengembangkan suatu teknologi.",
+    aboutP2: "Untuk hobi saya yaitu memainkan alat gitar dan bernyanyi. Kesibukan saya untuk sekarang yaitu hanya berkuliah.",
+    aboutP3: "Dan tujuan saya sekarang adalah ingin bekerja di Perusahaan yang besar, itu impian saya dari awal masuk kuliah",
     aboutName: "NAMA LENGKAP:",
     aboutEmail: "EMAIL:",
     aboutStatus: "STATUS:",
-    aboutStatusVal: "MAHASISWA SEMESTER 4",
+    aboutStatusVal: "MAHASISWA SEMESTER 5",
     aboutLocation: "LOKASI:",
     aboutLocationVal: "Kota Tangerang, Indonesia",
     techSmall: "Tech Stack",
@@ -161,12 +162,13 @@ const translations = {
     contactBtn: "Contact Me",
     aboutSmall: "About Me",
     aboutTitle: "I AM",
-    aboutP1: "I am a professional Fullstack Developer based in Indonesia. I specialize in designing large-scale, fast, and maintainable web applications. With expertise in modern frontend and robust backend architectures, I strive to deliver the best seamless digital solutions for users.",
-    aboutP2: "Since starting my journey in software engineering, I have constantly learned new technologies to keep pace with the fast-moving industry. I focus on writing clean, well-documented code and prioritizing site performance.",
+    aboutP1: "Hi, I am Zufa Rahmat Ramadhan, my friends usually call me Zura. I am a 5th-semester student at Universitas Muhammadiyah Tangerang. The reason I chose Informatics Engineering is because I am interested in developing technology.",
+    aboutP2: "For my hobbies, I play the guitar and sing. Currently, my daily activity is only studying.",
+    aboutP3: "And my current goal is to work in a large company, which has been my dream since I started college.",
     aboutName: "FULL NAME:",
     aboutEmail: "EMAIL:",
     aboutStatus: "STATUS:",
-    aboutStatusVal: "4TH SEMESTER STUDENT",
+    aboutStatusVal: "5TH SEMESTER STUDENT",
     aboutLocation: "LOCATION:",
     aboutLocationVal: "Tangerang City, Indonesia",
     techSmall: "Tech Stack",
@@ -507,6 +509,7 @@ export default function App() {
               <div className="space-y-4 text-slate-400 text-sm leading-relaxed">
                 <p>{t.aboutP1}</p>
                 <p>{t.aboutP2}</p>
+                <p>{t.aboutP3}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-3 pt-4 border-t border-slate-900">
@@ -759,7 +762,7 @@ export default function App() {
 
         {/* Footer */}
         <footer className="py-8 text-center border-t border-slate-900">
-          <p className="text-slate-600 text-xs font-mono">© 2024 Zufa Rahmat Ramadhan. {language === 'ID' ? 'Hak cipta dilindungi undang-undang.' : 'All rights reserved.'}</p>
+          <p className="text-slate-600 text-xs font-mono">© 2026 Zufa Rahmat Ramadhan. {language === 'ID' ? 'Hak cipta dilindungi undang-undang.' : 'All rights reserved.'}</p>
         </footer>
       </main>
     </div>
