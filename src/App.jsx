@@ -107,6 +107,91 @@ const getSkillIcon = (name) => {
 };
 
 
+const translations = {
+  ID: {
+    navHome: "Home",
+    navAbout: "Tentang",
+    navExperience: "Pengalaman",
+    navProjects: "Proyek",
+    navContact: "Kontak",
+    hello: "Halo, saya",
+    fullstack: "Fullstack Developer",
+    heroDesc: "Saya adalah seorang pengembang web serba bisa yang gemar merancang sistem backend kokoh serta tampilan antarmuka front-end yang dinamis, interaktif, dan modern.",
+    contactBtn: "Kontak Saya",
+    aboutSmall: "Tentang Saya",
+    aboutTitle: "I AM",
+    aboutP1: "Saya adalah seorang Fullstack Developer profesional yang berbasis di Indonesia. Saya berspesialisasi dalam merancang aplikasi web berskala besar, cepat, serta mudah dikelola. Dengan keahlian di bidang frontend modern dan arsitektur backend yang kokoh, saya berusaha keras memberikan solusi digital terbaik yang mulus bagi pengguna.",
+    aboutP2: "Sejak memulai perjalanan saya di bidang rekayasa perangkat lunak, saya terus mempelajari teknologi baru guna mengikuti perkembangan industri yang serba cepat. Saya fokus menulis kode yang bersih, terdokumentasi dengan baik, dan memprioritaskan performa situs.",
+    aboutName: "NAMA LENGKAP:",
+    aboutEmail: "EMAIL:",
+    aboutStatus: "STATUS:",
+    aboutStatusVal: "MAHASISWA SEMESTER 4",
+    aboutLocation: "LOKASI:",
+    aboutLocationVal: "Kota Tangerang, Indonesia",
+    techSmall: "Tech Stack",
+    techTitle: "Teknologi yang Saya Kuasai",
+    techDesc: "Kumpulan teknologi modern yang aktif saya gunakan dalam membangun aplikasi",
+    certSmall: "Pencapaian",
+    certTitle: "Sertifikasi & Lisensi",
+    certDesc: "Sertifikat yang telah saya raih dalam perjalanan belajar",
+    certTitlePrefix: "Sertifikat",
+    expSmall: "Perjalanan Karir",
+    expTitle: "Riwayat Pengalaman",
+    expJobTitle: "TUGAS KAMPUS",
+    expJobDesc: "Membuat aplikasi berbasis web untuk mengelola data buku dan peminjaman perpustakaan",
+    projSmall: "Karya Terbaik",
+    projTitle: "Proyek Pilihan",
+    projEmptyTitle: "KOSONG",
+    projEmptyDesc: "Belum ada deskripsi proyek.",
+    contactSmall: "Hubungi Saya",
+    contactTitle: "Hubungi Saya Kapan Saja",
+    contactDesc: "Apakah Anda memiliki proyek besar yang ingin dikerjakan bersama, memiliki pertanyaan spesifik, atau ingin membangun kolaborasi yang solid? Silakan hubungi saya melalui media sosial atau chat cepat di bawah.",
+    copied: "Tersalin!",
+    copy: "Salin",
+  },
+  EN: {
+    navHome: "Home",
+    navAbout: "About",
+    navExperience: "Experience",
+    navProjects: "Projects",
+    navContact: "Contact",
+    hello: "Hello, I am",
+    fullstack: "Fullstack Developer",
+    heroDesc: "I am a versatile web developer who loves designing robust backend systems as well as dynamic, interactive, and modern front-end interfaces.",
+    contactBtn: "Contact Me",
+    aboutSmall: "About Me",
+    aboutTitle: "I AM",
+    aboutP1: "I am a professional Fullstack Developer based in Indonesia. I specialize in designing large-scale, fast, and maintainable web applications. With expertise in modern frontend and robust backend architectures, I strive to deliver the best seamless digital solutions for users.",
+    aboutP2: "Since starting my journey in software engineering, I have constantly learned new technologies to keep pace with the fast-moving industry. I focus on writing clean, well-documented code and prioritizing site performance.",
+    aboutName: "FULL NAME:",
+    aboutEmail: "EMAIL:",
+    aboutStatus: "STATUS:",
+    aboutStatusVal: "4TH SEMESTER STUDENT",
+    aboutLocation: "LOCATION:",
+    aboutLocationVal: "Tangerang City, Indonesia",
+    techSmall: "Tech Stack",
+    techTitle: "Technologies I Master",
+    techDesc: "A collection of modern technologies I actively use in building applications",
+    certSmall: "Achievements",
+    certTitle: "Certifications & Licenses",
+    certDesc: "Certificates I have earned during my learning journey",
+    certTitlePrefix: "Certificate",
+    expSmall: "Career Journey",
+    expTitle: "Work Experience",
+    expJobTitle: "COLLEGE PROJECT",
+    expJobDesc: "Developed a web-based application to manage book data and library loans",
+    projSmall: "Best Works",
+    projTitle: "Selected Projects",
+    projEmptyTitle: "EMPTY",
+    projEmptyDesc: "No project description yet.",
+    contactSmall: "Contact Me",
+    contactTitle: "Get In Touch Anytime",
+    contactDesc: "Do you have a great project in mind, a specific question, or want to build a solid collaboration? Please contact me through social media or quick chat below.",
+    copied: "Copied!",
+    copy: "Copy",
+  }
+};
+
 export default function App() {
   const [currentGreetingIndex, setCurrentGreetingIndex] = useState(0);
   const [showSplash, setShowSplash] = useState(true);
@@ -114,13 +199,16 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [copiedText, setCopiedText] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [language, setLanguage] = useState('ID');
+
+  const t = translations[language];
 
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'experience', label: 'Experience' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'home', label: t.navHome },
+    { id: 'about', label: t.navAbout },
+    { id: 'experience', label: t.navExperience },
+    { id: 'projects', label: t.navProjects },
+    { id: 'contact', label: t.navContact },
   ];
 
   useEffect(() => {
@@ -189,6 +277,22 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-emerald-500/30 selection:text-emerald-400 relative overflow-x-hidden">
 
+      {/* LANGUAGE SELECTOR DESKTOP */}
+      <div className="hidden md:flex fixed top-5 right-5 z-50 items-center bg-slate-900/90 backdrop-blur-xl border border-slate-800/70 rounded-full p-1 shadow-2xl">
+        <button
+          onClick={() => setLanguage('ID')}
+          className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300 ${language === 'ID' ? 'bg-emerald-400 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'}`}
+        >
+          ID
+        </button>
+        <button
+          onClick={() => setLanguage('EN')}
+          className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300 ${language === 'EN' ? 'bg-emerald-400 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'}`}
+        >
+          EN
+        </button>
+      </div>
+
       {/* SPLASH SCREEN */}
       <div
         className="fixed inset-0 z-50 flex flex-col items-center justify-center px-4"
@@ -253,13 +357,30 @@ export default function App() {
       <nav className="md:hidden fixed top-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/60">
         <div className="flex items-center justify-between px-4 py-3">
           <span className="text-white font-black text-sm tracking-widest">ZURA<span className="text-emerald-400">.</span></span>
-          <button
-            onClick={() => setMobileMenuOpen(prev => !prev)}
-            className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800/50"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          <div className="flex items-center gap-3">
+            {/* Language Switcher Mobile */}
+            <div className="flex items-center bg-slate-900 border border-slate-800 rounded-full p-0.5">
+              <button
+                onClick={() => setLanguage('ID')}
+                className={`px-2.5 py-1 rounded-full text-[10px] font-black transition-all duration-200 ${language === 'ID' ? 'bg-emerald-400 text-slate-950 shadow-sm' : 'text-slate-400'}`}
+              >
+                ID
+              </button>
+              <button
+                onClick={() => setLanguage('EN')}
+                className={`px-2.5 py-1 rounded-full text-[10px] font-black transition-all duration-200 ${language === 'EN' ? 'bg-emerald-400 text-slate-950 shadow-sm' : 'text-slate-400'}`}
+              >
+                EN
+              </button>
+            </div>
+            <button
+              onClick={() => setMobileMenuOpen(prev => !prev)}
+              className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800/50"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile dropdown menu */}
@@ -314,7 +435,7 @@ export default function App() {
           {/* Text content */}
           <div className="flex-1 space-y-5 text-center md:text-left md:order-1 w-full mt-4 md:mt-0">
             <div className="space-y-3">
-              <h1 className="text-slate-400 font-sans text-base sm:text-xl tracking-wider">Hello, I am</h1>
+              <h1 className="text-slate-400 font-sans text-base sm:text-xl tracking-wider">{t.hello}</h1>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.25] sm:leading-[1.2] md:leading-tight">
                 ZUFA RAHMAT<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-indigo-400">
@@ -322,12 +443,12 @@ export default function App() {
                 </span>
               </h2>
               <p className="text-lg sm:text-xl md:text-2xl font-bold text-slate-300 tracking-wide font-mono">
-                Fullstack Developer
+                {t.fullstack}
               </p>
             </div>
 
             <p className="text-slate-400 max-w-lg text-sm leading-relaxed mx-auto md:mx-0">
-              Saya adalah seorang pengembang web serba bisa yang gemar merancang sistem backend kokoh serta tampilan antarmuka front-end yang dinamis, interaktif, dan modern.
+              {t.heroDesc}
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-2 justify-center md:justify-start">
@@ -347,7 +468,7 @@ export default function App() {
                 onClick={() => scrollToSection('contact')}
                 className="flex items-center space-x-2 px-6 py-3.5 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold rounded-xl tracking-wider text-sm shadow-lg shadow-emerald-400/10 hover:shadow-emerald-400/25 transition-all duration-300 w-full sm:w-auto justify-center"
               >
-                <span>Kontak Saya</span>
+                <span>{t.contactBtn}</span>
                 <ChevronRight size={16} />
               </button>
             </div>
@@ -374,44 +495,39 @@ export default function App() {
 
             <div className="flex-1 space-y-6 w-full">
               <div className="space-y-2">
-                <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">Tentang Saya</span>
+                <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">{t.aboutSmall}</span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-relaxed">
-                  I AM <span className="inline-block">ZURA</span>
-                  <br />
-                  <span className="relative inline-block px-3 py-1 mt-2 bg-violet-500 rounded-sm">
-                    <span className="relative text-white font-bold text-lg sm:text-2xl">FULLSTACK DEVELOPER</span>
+                  {t.aboutTitle}{" "}
+                  <span className="relative inline-block px-3 py-1 bg-violet-500 rounded-sm">
+                    <span className="relative text-white font-bold text-lg sm:text-2xl">ZURA</span>
                   </span>
                 </h2>
               </div>
 
               <div className="space-y-4 text-slate-400 text-sm leading-relaxed">
-                <p>
-                  Saya adalah seorang Fullstack Developer profesional yang berbasis di Indonesia. Saya berspesialisasi dalam merancang aplikasi web berskala besar, cepat, serta mudah dikelola. Dengan keahlian di bidang frontend modern dan arsitektur backend yang kokoh, saya berusaha keras memberikan solusi digital terbaik yang mulus bagi pengguna.
-                </p>
-                <p>
-                  Sejak memulai perjalanan saya di bidang rekayasa perangkat lunak, saya terus mempelajari teknologi baru guna mengikuti perkembangan industri yang serba cepat. Saya fokus menulis kode yang bersih, terdokumentasi dengan baik, dan memprioritaskan performa situs.
-                </p>
+                <p>{t.aboutP1}</p>
+                <p>{t.aboutP2}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-3 pt-4 border-t border-slate-900">
                 <div className="space-y-1">
-                  <span className="text-xs text-slate-500 block font-mono">NAMA LENGKAP:</span>
+                  <span className="text-xs text-slate-500 block font-mono">{t.aboutName}</span>
                   <span className="font-semibold text-slate-200 text-xs sm:text-sm">ZUFA RAHMAT RAMADHAN</span>
                 </div>
                 <div className="space-y-1">
-                  <span className="text-xs text-slate-500 block font-mono">EMAIL:</span>
+                  <span className="text-xs text-slate-500 block font-mono">{t.aboutEmail}</span>
                   <span className="font-semibold text-slate-200 text-xs sm:text-sm break-all">hasfallenz12@gmail.com</span>
                 </div>
                 <div className="space-y-1">
-                  <span className="text-xs text-slate-500 block font-mono">STATUS:</span>
+                  <span className="text-xs text-slate-500 block font-mono">{t.aboutStatus}</span>
                   <span className="font-semibold text-emerald-400 text-xs sm:text-sm flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
-                    MAHASISWA SEMESTER 4
+                    {t.aboutStatusVal}
                   </span>
                 </div>
                 <div className="space-y-1">
-                  <span className="text-xs text-slate-500 block font-mono">LOKASI:</span>
-                  <span className="font-semibold text-slate-200 text-xs sm:text-sm">Kota Tangerang, Indonesia</span>
+                  <span className="text-xs text-slate-500 block font-mono">{t.aboutLocation}</span>
+                  <span className="font-semibold text-slate-200 text-xs sm:text-sm">{t.aboutLocationVal}</span>
                 </div>
               </div>
             </div>
@@ -420,9 +536,9 @@ export default function App() {
           {/* TECH SKILLS GRID */}
           <div className="mt-16 md:mt-20">
             <div className="text-center mb-10">
-              <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">Tech Stack</span>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">Teknologi yang Saya Kuasai</h3>
-              <p className="text-slate-500 text-sm mt-2">Kumpulan teknologi modern yang aktif saya gunakan dalam membangun aplikasi</p>
+              <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">{t.techSmall}</span>
+              <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">{t.techTitle}</h3>
+              <p className="text-slate-500 text-sm mt-2">{t.techDesc}</p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto px-2 sm:px-4">
@@ -464,9 +580,9 @@ export default function App() {
           {/* SERTIFIKAT */}
           <div className="mt-16 md:mt-20">
             <div className="text-center mb-8 md:mb-10">
-              <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">Pencapaian</span>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">Sertifikasi & Lisensi</h3>
-              <p className="text-slate-500 text-sm mt-2">Sertifikat yang telah saya raih dalam perjalanan belajar</p>
+              <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">{t.certSmall}</span>
+              <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">{t.certTitle}</h3>
+              <p className="text-slate-500 text-sm mt-2">{t.certDesc}</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
@@ -478,7 +594,7 @@ export default function App() {
                   {cert.imageUrl ? (
                     <img
                       src={cert.imageUrl}
-                      alt={cert.title}
+                      alt={cert.title.replace('Sertifikat', t.certTitlePrefix)}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -486,11 +602,11 @@ export default function App() {
                       <div className="w-12 h-12 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center">
                         <Award size={24} />
                       </div>
-                      <span className="text-xs font-mono tracking-wider font-semibold">{cert.title}</span>
+                      <span className="text-xs font-mono tracking-wider font-semibold">{cert.title.replace('Sertifikat', t.certTitlePrefix)}</span>
                     </div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                    <span className="text-xs font-semibold text-white">{cert.title}</span>
+                    <span className="text-xs font-semibold text-white">{cert.title.replace('Sertifikat', t.certTitlePrefix)}</span>
                   </div>
                 </div>
               ))}
@@ -502,8 +618,8 @@ export default function App() {
         {/* SECTION 3: EXPERIENCE */}
         <section id="experience" className="py-16 md:py-24 border-t border-slate-900">
           <div className="space-y-2 mb-10 md:mb-12 text-center">
-            <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">Perjalanan Karir</span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Riwayat Pengalaman</h2>
+            <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">{t.expSmall}</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">{t.expTitle}</h2>
           </div>
 
           <div className="max-w-3xl mx-auto space-y-6">
@@ -511,11 +627,11 @@ export default function App() {
 
               {[
                 {
-                  title: "TUGAS KAMPUS",
+                  title: t.expJobTitle,
                   company: "Laravel + XAMPP",
                   date: "2026",
                   active: true,
-                  desc: "Membuat aplikasi berbasis web untuk mengelola data buku dan peminjaman perpustakaan"
+                  desc: t.expJobDesc
                 },
               ].map((job, i) => (
                 <div key={i} className="relative">
@@ -543,8 +659,8 @@ export default function App() {
         <section id="projects" className="py-16 md:py-24 border-t border-slate-900">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 md:mb-12">
             <div className="space-y-2 text-center sm:text-left">
-              <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">Karya Terbaik</span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Proyek Pilihan</h2>
+              <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">{t.projSmall}</span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">{t.projTitle}</h2>
             </div>
           </div>
 
@@ -555,8 +671,8 @@ export default function App() {
                   <img src={`/project${n}.jpg`} alt={`Project ${n}`} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                 </div>
                 <div className="space-y-2 flex-grow">
-                  <h3 className="font-bold text-white text-base group-hover:text-emerald-400 transition-colors">KOSONG</h3>
-                  <p className="text-xs text-slate-400 leading-relaxed">Empty.</p>
+                  <h3 className="font-bold text-white text-base group-hover:text-emerald-400 transition-colors">{t.projEmptyTitle}</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">{t.projEmptyDesc}</p>
                 </div>
                 <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-900/50 mt-4" />
               </div>
@@ -569,10 +685,10 @@ export default function App() {
           <div className="max-w-4xl mx-auto space-y-10 md:space-y-12">
 
             <div className="space-y-3 text-center max-w-2xl mx-auto">
-              <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase block">Hubungi Saya</span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">Hubungi Saya Kapan Saja</h2>
+              <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase block">{t.contactSmall}</span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">{t.contactTitle}</h2>
               <p className="text-slate-400 text-sm leading-relaxed">
-                Apakah Anda memiliki proyek besar yang ingin dikerjakan bersama, memiliki pertanyaan spesifik, atau ingin membangun kolaborasi yang solid? Silakan hubungi saya melalui media sosial atau chat cepat di bawah.
+                {t.contactDesc}
               </p>
             </div>
 
@@ -593,7 +709,7 @@ export default function App() {
                 <ChevronRight size={18} className="text-slate-500 group-hover:text-emerald-400 flex-shrink-0 ml-2" />
               </a>
 
-              <a href="https://instagram.com/has.fallenz" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-900 rounded-2xl hover:border-pink-500/20 transition-all duration-300 group">
+              <a href="https://instagram.com/has.fallenz" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-850 rounded-2xl hover:border-pink-500/20 transition-all duration-300 group">
                 <div className="flex items-center space-x-3 min-w-0">
                   <div className="p-2.5 sm:p-3 bg-pink-500/10 text-pink-400 rounded-xl flex-shrink-0">
                     <Instagram size={20} />
@@ -606,7 +722,7 @@ export default function App() {
                 <ChevronRight size={18} className="text-slate-500 group-hover:text-pink-400 flex-shrink-0 ml-2" />
               </a>
 
-              <div className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-900 rounded-2xl hover:border-indigo-500/20 transition-all duration-300">
+              <div className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-800 rounded-2xl hover:border-indigo-500/20 transition-all duration-300">
                 <div className="flex items-center space-x-3 min-w-0 flex-1 mr-2">
                   <div className="p-2.5 sm:p-3 bg-indigo-500/10 text-indigo-400 rounded-xl flex-shrink-0">
                     <Mail size={20} />
@@ -620,11 +736,11 @@ export default function App() {
                   onClick={() => handleCopy('hasfallenz12@gmail.com', 'email')}
                   className="text-xs font-mono bg-slate-950 border border-slate-800 hover:border-indigo-500/30 px-2.5 py-1.5 rounded-xl text-slate-400 hover:text-white transition-all active:scale-95 flex-shrink-0"
                 >
-                  {copiedText === 'email' ? 'Tersalin!' : 'Salin'}
+                  {copiedText === 'email' ? t.copied : t.copy}
                 </button>
               </div>
 
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-900 rounded-2xl hover:border-blue-500/20 transition-all duration-300 group">
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-800 rounded-2xl hover:border-blue-500/20 transition-all duration-300 group">
                 <div className="flex items-center space-x-3 min-w-0">
                   <div className="p-2.5 sm:p-3 bg-blue-500/10 text-blue-400 rounded-xl flex-shrink-0">
                     <Linkedin size={20} />
@@ -643,22 +759,9 @@ export default function App() {
 
         {/* Footer */}
         <footer className="py-8 text-center border-t border-slate-900">
-          <p className="text-slate-600 text-xs font-mono">© 2024 Zufa Rahmat Ramadhan. All rights reserved.</p>
+          <p className="text-slate-600 text-xs font-mono">© 2024 Zufa Rahmat Ramadhan. {language === 'ID' ? 'Hak cipta dilindungi undang-undang.' : 'All rights reserved.'}</p>
         </footer>
-
       </main>
-
-      {/* MARQUEE KEYFRAMES */}
-      <style>{`
-        @keyframes marquee-left {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes marquee-right {
-          0%   { transform: translateX(-50%); }
-          100% { transform: translateX(0); }
-        }
-      `}</style>
     </div>
   );
 }
