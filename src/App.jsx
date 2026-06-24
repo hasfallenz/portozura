@@ -1005,7 +1005,7 @@ export default function App() {
                   </div>
                   <div className="min-w-0">
                     <h4 className="text-white text-xs sm:text-sm font-bold">WhatsApp</h4>
-                    <span className="text-emerald-400 text-2xs font-mono truncate block">ZURA RAHMAT</span>
+                    <span className="text-emerald-400 text-2xs font-mono truncate block">ZUFA RAHMAT RAMADHAN</span>
                   </div>
                 </div>
                 <ChevronRight size={16} className="text-slate-500 group-hover:text-emerald-400 flex-shrink-0 ml-2" />
