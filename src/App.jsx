@@ -8,7 +8,18 @@ import {
   Award,
   ExternalLink,
   Menu,
-  X
+  X,
+  Play,
+  Volume2,
+  BookOpen,
+  Terminal,
+  Music,
+  Check,
+  Copy,
+  Sparkles,
+  Filter,
+  Database,
+  Code
 } from 'lucide-react';
 
 const greetings = [
@@ -30,22 +41,302 @@ const greetings = [
 ];
 
 const techSkills = [
-  { name: "React", color: "#61DAFB" },
-  { name: "Laravel", color: "#FF2D20" },
-  { name: "Python", color: "#3776AB" },
-  { name: "Next.js", color: "#FFFFFF" },
-  { name: "Tailwind CSS", color: "#38BDF8" },
-  { name: "Node.js", color: "#8CC84B" },
+  { name: "React", color: "#61DAFB", level: "Intermediate", desc: "Membangun SPA interaktif dengan Hook dan State." },
+  { name: "Laravel", color: "#FF2D20", level: "Intermediate", desc: "Membuat REST API dan backend server MVC." },
+  { name: "Python", color: "#3776AB", level: "Beginner", desc: "Mengembangkan script otomasi dan pemrosesan data." },
+  { name: "Next.js", color: "#FFFFFF", level: "Beginner", desc: "Mempelajari rendering SSR & SSG untuk SEO." },
+  { name: "Tailwind CSS", color: "#38BDF8", level: "Advanced", desc: "Merancang UI modern, responsive, dan respons kilat." },
+  { name: "Node.js", color: "#8CC84B", level: "Beginner", desc: "Membuat REST API backend sederhana." },
 ];
 
-const certificates = [
-  { id: 1, title: "Sertifikat 1", imageUrl: "" },
-  { id: 2, title: "Sertifikat 2", imageUrl: "" },
-  { id: 3, title: "Sertifikat 3", imageUrl: "" },
-  { id: 4, title: "Sertifikat 4", imageUrl: "" },
-  { id: 5, title: "Sertifikat 5", imageUrl: "" },
-  { id: 6, title: "Sertifikat 6", imageUrl: "" },
+// Frequencies for guitar chords
+const guitarChords = {
+  'C': [130.81, 164.81, 196.00, 261.63, 329.63], // C3, E3, G3, C4, E4
+  'G': [98.00, 123.47, 146.83, 196.00, 246.94, 392.00], // G2, B2, D3, G3, B3, G4
+  'Am': [110.00, 164.81, 220.00, 261.63, 329.63], // A2, E3, A3, C4, E4
+  'F': [87.31, 130.81, 174.61, 220.00, 261.63, 349.23], // F2, C3, F3, A3, C4, F4
+  'D': [146.83, 220.00, 293.66, 369.99], // D3, A3, D4, F#4
+  'Em': [82.41, 123.47, 164.81, 196.00, 246.94, 329.63] // E2, B2, E3, G3, B3, E4
+};
+
+const playGuitarChord = (chordName) => {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+  const ctx = new AudioContext();
+
+  const freqs = guitarChords[chordName] || [261.63];
+
+  freqs.forEach((freq, index) => {
+    const delay = index * 0.05; // 50ms delay for strumming simulation
+    const osc = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1200, ctx.currentTime + delay);
+    filter.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + delay + 1.2);
+
+    gainNode.gain.setValueAtTime(0, ctx.currentTime + delay);
+    gainNode.gain.linearRampToValueAtTime(0.25, ctx.currentTime + delay + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + 1.4);
+
+    osc.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    osc.start(ctx.currentTime + delay);
+    osc.stop(ctx.currentTime + delay + 1.5);
+  });
+};
+
+const projectsData = [
+  {
+    id: 1,
+    title: {
+      ID: "BookVerse - Sistem Perpustakaan",
+      EN: "BookVerse - Library System"
+    },
+    desc: {
+      ID: "Sistem manajemen buku dan peminjaman perpustakaan berbasis web dengan dashboard admin informatif.",
+      EN: "Web-based library loan and book management system with an informative admin dashboard."
+    },
+    longDesc: {
+      ID: "BookVerse dirancang untuk merapikan pencatatan manual perpustakaan kampus. Menggunakan Laravel sebagai backend API MVC yang kokoh dan database MySQL di XAMPP. Fitur utamanya mencakup autentikasi hak akses admin/anggota, pencarian katalog cerdas, manajemen stok buku dinamis, denda keterlambatan pengembalian otomatis, serta pembuatan laporan bulanan.",
+      EN: "BookVerse is designed to organize manual library logs. Built on Laravel as a robust MVC backend API and MySQL database hosted in XAMPP. Key features include role-based auth (admin/member), smart catalog search, dynamic inventory management, automatic late return fee calculation, and monthly PDF reports."
+    },
+    tags: ["Laravel", "XAMPP", "Bootstrap", "MySQL"],
+    demoUrl: "#",
+    githubUrl: "https://github.com",
+    stats: { ID: "Dipakai oleh 150+ Mahasiswa", EN: "Used by 150+ Students" },
+    category: "Laravel",
+    mockupType: "library"
+  },
+  {
+    id: 2,
+    title: {
+      ID: "Zenith - Audio Streamer",
+      EN: "Zenith - Audio Streamer"
+    },
+    desc: {
+      ID: "Aplikasi streaming musik modern dengan visualizer gelombang audio Canvas interaktif secara real-time.",
+      EN: "Modern music streaming application featuring an interactive real-time Canvas audio visualizer."
+    },
+    longDesc: {
+      ID: "Zenith adalah pemutar audio web premium yang didesain khusus untuk pecinta musik. Dikembangkan menggunakan React dan Web Audio API untuk menghasilkan manipulasi filter suara secara real-time. Aplikasi ini memiliki audio visualizer berbasis Canvas, kontrol EQ kustom, spatial panning, dan penyimpanan offline playlist lagu menggunakan IndexedDB.",
+      EN: "Zenith is a premium web audio player custom-designed for music lovers. Developed with React and Web Audio API to enable real-time sound filter adjustments. It comes with a canvas-based visualizer, custom EQ controls, spatial panning, and offline playlist management via IndexedDB."
+    },
+    tags: ["React", "Tailwind CSS", "Web Audio API", "Vite"],
+    demoUrl: "#",
+    githubUrl: "https://github.com",
+    stats: { ID: "Audio Visualizer Real-time", EN: "Real-time Audio Visualizer" },
+    category: "React",
+    mockupType: "music"
+  },
+  {
+    id: 3,
+    title: {
+      ID: "SentimentAI - Analisis Ulasan",
+      EN: "SentimentAI - Sentiment Analysis"
+    },
+    desc: {
+      ID: "Program Python NLP untuk mendeteksi sentimen ulasan produk e-commerce secara otomatis.",
+      EN: "Python NLP script to automatically detect and classify e-commerce product review sentiments."
+    },
+    longDesc: {
+      ID: "SentimentAI adalah script otomasi analisis teks menggunakan pustaka NLTK dan TextBlob di Python. Program ini mampu menyaring ribuan data ulasan pembeli dari file CSV, mengategorikannya ke dalam kelompok Positif, Netral, atau Negatif, mendeteksi tingkat keakuratan opini, serta mengekspor analisis visual berupa grafik statistika lewat Matplotlib dan Seaborn.",
+      EN: "SentimentAI is a text analysis automation script powered by Python's NLTK and TextBlob. It parses thousands of buyer reviews from CSV files, classifies them into Positive, Neutral, or Negative categories, measures confidence scores, and exports visual metrics charts via Matplotlib and Seaborn."
+    },
+    tags: ["Python", "NLP", "Pandas", "Matplotlib"],
+    demoUrl: "#",
+    githubUrl: "https://github.com",
+    stats: { ID: "Akurasi Klasifikasi 92%", EN: "92% Classification Accuracy" },
+    category: "Python",
+    mockupType: "ai"
+  }
 ];
+
+const certificatesData = [
+  {
+    id: 1,
+    title: {
+      ID: "Belajar Dasar Pemrograman JavaScript",
+      EN: "Learn Basic JavaScript Programming"
+    },
+    issuer: "Dicoding Indonesia",
+    date: "2025",
+    credentialId: "DSC-JS-991823",
+    skills: ["JavaScript ES6", "Logical Thinking", "OOP Principles"],
+    color: "#fbbf24"
+  },
+  {
+    id: 2,
+    title: {
+      ID: "Pengembangan Aplikasi Web Laravel",
+      EN: "Laravel Web Application Development"
+    },
+    issuer: "Skillvul - Kampus Merdeka",
+    date: "2026",
+    credentialId: "SKV-LV-882739",
+    skills: ["Laravel MVC", "Database Migration", "RESTful API"],
+    color: "#f43f5e"
+  },
+  {
+    id: 3,
+    title: {
+      ID: "Python untuk Analisis Data & Sains",
+      EN: "Python for Data Analysis & Science"
+    },
+    issuer: "Coursera - IBM Academic",
+    date: "2025",
+    credentialId: "IBM-PY-773641",
+    skills: ["Python Pandas", "Data Cleaning", "Matplotlib Charts"],
+    color: "#3b82f6"
+  },
+  {
+    id: 4,
+    title: {
+      ID: "Responsive Web Design Certification",
+      EN: "Responsive Web Design Certification"
+    },
+    issuer: "freeCodeCamp Academy",
+    date: "2024",
+    credentialId: "FCC-HTML-55610",
+    skills: ["HTML5 Semantic", "CSS Grid & Flexbox", "Web Accessibility"],
+    color: "#10b981"
+  }
+];
+
+const translations = {
+  ID: {
+    navHome: "Home",
+    navAbout: "Tentang",
+    navExperience: "Pengalaman",
+    navProjects: "Proyek",
+    navContact: "Kontak",
+    hello: "Halo, saya",
+    fullstack: "Fullstack Developer",
+    heroDesc: "Saya adalah seorang pengembang web serba bisa yang gemar merancang sistem backend kokoh serta tampilan antarmuka front-end yang dinamis, interaktif, dan modern.",
+    contactBtn: "Kontak Saya",
+    aboutSmall: "Tentang Saya",
+    aboutTitle: "I AM",
+    aboutP1: "Hai, saya Zufa Rahmat Ramadhan, saya biasa di panggil zura oleh kawan-kawan saya. Saya Mahasiswa Semester 5 di Universitas Muhammadiyah Tangerang. Alasan saya ambil jurusan Teknik Informatika karena saya tertarik untuk mengembangkan suatu teknologi.",
+    aboutP2: "Untuk hobi saya yaitu memainkan alat gitar dan bernyanyi. Kesibukan saya untuk sekarang yaitu hanya berkuliah.",
+    aboutP3: "Dan tujuan saya sekarang adalah ingin bekerja di Perusahaan yang besar, itu impian saya dari awal masuk kuliah",
+    aboutName: "NAMA LENGKAP:",
+    aboutEmail: "EMAIL:",
+    aboutStatus: "STATUS:",
+    aboutStatusVal: "MAHASISWA SEMESTER 5",
+    aboutLocation: "LOKASI:",
+    aboutLocationVal: "Kota Tangerang, Indonesia",
+    techSmall: "Tech Stack",
+    techTitle: "Teknologi yang Saya Kuasai",
+    techDesc: "Kumpulan teknologi modern yang aktif saya gunakan dalam membangun aplikasi",
+    certSmall: "Pencapaian",
+    certTitle: "Sertifikasi & Lisensi",
+    certDesc: "Sertifikat yang telah saya raih dalam perjalanan belajar (Klik untuk detail)",
+    certTitlePrefix: "Sertifikat",
+    expSmall: "Perjalanan Karir",
+    expTitle: "Riwayat Pengalaman",
+    expJobTitle: "TUGAS KAMPUS (PROJECT UTAMA)",
+    expJobDesc: "Membuat aplikasi berbasis web untuk mengelola data buku dan peminjaman perpustakaan kampus.",
+    projSmall: "Karya Terbaik",
+    projTitle: "Proyek Pilihan",
+    projDesc: "Melihat portofolio kode kustom yang dibangun dengan performa tinggi.",
+    contactSmall: "Hubungi Saya",
+    contactTitle: "Hubungi Saya Kapan Saja",
+    contactDesc: "Apakah Anda memiliki proyek besar yang ingin dikerjakan bersama, memiliki pertanyaan spesifik, atau ingin membangun kolaborasi yang solid? Silakan hubungi saya melalui media sosial atau chat cepat di bawah.",
+    copied: "Tersalin!",
+    copy: "Salin",
+    guitarTitle: "🎸 Sudut Gitar Zura",
+    guitarDesc: "Saya suka menyanyi dan main gitar. Coba klik tombol chord di bawah ini untuk mendengar petikan nada gitar virtual secara real-time langsung dari web ini!",
+    guitarInstruction: "Klik chord untuk bersuara:",
+    viewDetails: "Lihat Detail",
+    filterAll: "Semua",
+    statsTitle: "Statistik Portofolio",
+    statsProjects: "Proyek Aktif",
+    statsCertificates: "Sertifikasi",
+    statsSemesters: "Semester Kuliah",
+    statsCommits: "GitHub Commits",
+    projectDetails: "Detail Proyek",
+    closeBtn: "Tutup",
+    githubBtn: "Lihat Kode",
+    demoBtn: "Kunjungi Web",
+    contactNamePlaceholder: "Nama Lengkap Anda",
+    contactEmailPlaceholder: "Alamat Email Anda",
+    contactMessagePlaceholder: "Tulis pesan atau pertanyaan Anda di sini...",
+    contactSubmitBtn: "Kirim Pesan",
+    contactSendingBtn: "Mengirim...",
+    contactSuccessTitle: "Pesan Terkirim!",
+    contactSuccessDesc: "Terima kasih banyak! Pesan Anda telah berhasil disimpan ke database lokal browser (localStorage). Saya akan segera membalas lewat kontak Anda.",
+    copiedToast: "Email berhasil disalin ke papan klip!"
+  },
+  EN: {
+    navHome: "Home",
+    navAbout: "About",
+    navExperience: "Experience",
+    navProjects: "Projects",
+    navContact: "Contact",
+    hello: "Hello, I am",
+    fullstack: "Fullstack Developer",
+    heroDesc: "I am a versatile web developer who loves designing robust backend systems as well as dynamic, interactive, and modern front-end interfaces.",
+    contactBtn: "Contact Me",
+    aboutSmall: "About Me",
+    aboutTitle: "I AM",
+    aboutP1: "Hi, I am Zufa Rahmat Ramadhan, my friends usually call me Zura. I am a 5th-semester student at Universitas Muhammadiyah Tangerang. The reason I chose Informatics Engineering is because I am interested in developing technology.",
+    aboutP2: "For my hobbies, I play the guitar and sing. Currently, my daily activity is only studying.",
+    aboutP3: "And my current goal is to work in a large company, which has been my dream since I started college.",
+    aboutName: "FULL NAME:",
+    aboutEmail: "EMAIL:",
+    aboutStatus: "STATUS:",
+    aboutStatusVal: "5TH SEMESTER STUDENT",
+    aboutLocation: "LOCATION:",
+    aboutLocationVal: "Tangerang City, Indonesia",
+    techSmall: "Tech Stack",
+    techTitle: "Technologies I Master",
+    techDesc: "A collection of modern technologies I actively use in building applications",
+    certSmall: "Achievements",
+    certTitle: "Certifications & Licenses",
+    certDesc: "Certificates I have earned during my learning journey (Click to view)",
+    certTitlePrefix: "Certificate",
+    expSmall: "Career Journey",
+    expTitle: "Work Experience",
+    expJobTitle: "COLLEGE PROJECT (MAIN PROJECT)",
+    expJobDesc: "Developed a web-based application to manage book data and library loans for the campus.",
+    projSmall: "Best Works",
+    projTitle: "Selected Projects",
+    projDesc: "Take a look at custom portfolio projects engineered with high performance.",
+    contactSmall: "Contact Me",
+    contactTitle: "Get In Touch Anytime",
+    contactDesc: "Do you have a great project in mind, a specific question, or want to build a solid collaboration? Please contact me through social media or quick chat below.",
+    copied: "Copied!",
+    copy: "Copy",
+    guitarTitle: "🎸 Zura's Guitar Corner",
+    guitarDesc: "I love singing and playing the guitar. Try clicking the chord buttons below to hear virtual acoustic guitar sounds synthesized in real-time right from your browser!",
+    guitarInstruction: "Click chord to play:",
+    viewDetails: "View Details",
+    filterAll: "All",
+    statsTitle: "Portfolio Stats",
+    statsProjects: "Active Projects",
+    statsCertificates: "Certifications",
+    statsSemesters: "Semesters",
+    statsCommits: "GitHub Commits",
+    projectDetails: "Project Details",
+    closeBtn: "Close",
+    githubBtn: "View Code",
+    demoBtn: "Visit Live Web",
+    contactNamePlaceholder: "Your Full Name",
+    contactEmailPlaceholder: "Your Email Address",
+    contactMessagePlaceholder: "Write your message or inquiry here...",
+    contactSubmitBtn: "Send Message",
+    contactSendingBtn: "Sending...",
+    contactSuccessTitle: "Message Sent!",
+    contactSuccessDesc: "Thank you so much! Your message has been successfully saved to the browser's local database (localStorage). I will contact you back shortly.",
+    copiedToast: "Email copied to clipboard successfully!"
+  }
+};
 
 const getSkillIcon = (name) => {
   switch (name) {
@@ -106,94 +397,6 @@ const getSkillIcon = (name) => {
   }
 };
 
-
-const translations = {
-  ID: {
-    navHome: "Home",
-    navAbout: "Tentang",
-    navExperience: "Pengalaman",
-    navProjects: "Proyek",
-    navContact: "Kontak",
-    hello: "Halo, saya",
-    fullstack: "Fullstack Developer",
-    heroDesc: "Saya adalah seorang pengembang web serba bisa yang gemar merancang sistem backend kokoh serta tampilan antarmuka front-end yang dinamis, interaktif, dan modern.",
-    contactBtn: "Kontak Saya",
-    aboutSmall: "Tentang Saya",
-    aboutTitle: "I AM",
-    aboutP1: "Hai, saya Zufa Rahmat Ramadhan, saya biasa di panggil zura oleh kawan-kawan saya. Saya Mahasiswa Semester 5 di Universitas Muhammadiyah Tangerang. Alasan saya ambil jurusan Teknik Informatika karena saya tertarik untuk mengembangkan suatu teknologi.",
-    aboutP2: "Untuk hobi saya yaitu memainkan alat gitar dan bernyanyi. Kesibukan saya untuk sekarang yaitu hanya berkuliah.",
-    aboutP3: "Dan tujuan saya sekarang adalah ingin bekerja di Perusahaan yang besar, itu impian saya dari awal masuk kuliah",
-    aboutName: "NAMA LENGKAP:",
-    aboutEmail: "EMAIL:",
-    aboutStatus: "STATUS:",
-    aboutStatusVal: "MAHASISWA SEMESTER 5",
-    aboutLocation: "LOKASI:",
-    aboutLocationVal: "Kota Tangerang, Indonesia",
-    techSmall: "Tech Stack",
-    techTitle: "Teknologi yang Saya Kuasai",
-    techDesc: "Kumpulan teknologi modern yang aktif saya gunakan dalam membangun aplikasi",
-    certSmall: "Pencapaian",
-    certTitle: "Sertifikasi & Lisensi",
-    certDesc: "Sertifikat yang telah saya raih dalam perjalanan belajar",
-    certTitlePrefix: "Sertifikat",
-    expSmall: "Perjalanan Karir",
-    expTitle: "Riwayat Pengalaman",
-    expJobTitle: "TUGAS KAMPUS",
-    expJobDesc: "Membuat aplikasi berbasis web untuk mengelola data buku dan peminjaman perpustakaan",
-    projSmall: "Karya Terbaik",
-    projTitle: "Proyek Pilihan",
-    projEmptyTitle: "KOSONG",
-    projEmptyDesc: "Belum ada deskripsi proyek.",
-    contactSmall: "Hubungi Saya",
-    contactTitle: "Hubungi Saya Kapan Saja",
-    contactDesc: "Apakah Anda memiliki proyek besar yang ingin dikerjakan bersama, memiliki pertanyaan spesifik, atau ingin membangun kolaborasi yang solid? Silakan hubungi saya melalui media sosial atau chat cepat di bawah.",
-    copied: "Tersalin!",
-    copy: "Salin",
-  },
-  EN: {
-    navHome: "Home",
-    navAbout: "About",
-    navExperience: "Experience",
-    navProjects: "Projects",
-    navContact: "Contact",
-    hello: "Hello, I am",
-    fullstack: "Fullstack Developer",
-    heroDesc: "I am a versatile web developer who loves designing robust backend systems as well as dynamic, interactive, and modern front-end interfaces.",
-    contactBtn: "Contact Me",
-    aboutSmall: "About Me",
-    aboutTitle: "I AM",
-    aboutP1: "Hi, I am Zufa Rahmat Ramadhan, my friends usually call me Zura. I am a 5th-semester student at Universitas Muhammadiyah Tangerang. The reason I chose Informatics Engineering is because I am interested in developing technology.",
-    aboutP2: "For my hobbies, I play the guitar and sing. Currently, my daily activity is only studying.",
-    aboutP3: "And my current goal is to work in a large company, which has been my dream since I started college.",
-    aboutName: "FULL NAME:",
-    aboutEmail: "EMAIL:",
-    aboutStatus: "STATUS:",
-    aboutStatusVal: "5TH SEMESTER STUDENT",
-    aboutLocation: "LOCATION:",
-    aboutLocationVal: "Tangerang City, Indonesia",
-    techSmall: "Tech Stack",
-    techTitle: "Technologies I Master",
-    techDesc: "A collection of modern technologies I actively use in building applications",
-    certSmall: "Achievements",
-    certTitle: "Certifications & Licenses",
-    certDesc: "Certificates I have earned during my learning journey",
-    certTitlePrefix: "Certificate",
-    expSmall: "Career Journey",
-    expTitle: "Work Experience",
-    expJobTitle: "COLLEGE PROJECT",
-    expJobDesc: "Developed a web-based application to manage book data and library loans",
-    projSmall: "Best Works",
-    projTitle: "Selected Projects",
-    projEmptyTitle: "EMPTY",
-    projEmptyDesc: "No project description yet.",
-    contactSmall: "Contact Me",
-    contactTitle: "Get In Touch Anytime",
-    contactDesc: "Do you have a great project in mind, a specific question, or want to build a solid collaboration? Please contact me through social media or quick chat below.",
-    copied: "Copied!",
-    copy: "Copy",
-  }
-};
-
 export default function App() {
   const [currentGreetingIndex, setCurrentGreetingIndex] = useState(0);
   const [showSplash, setShowSplash] = useState(true);
@@ -202,6 +405,20 @@ export default function App() {
   const [copiedText, setCopiedText] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [language, setLanguage] = useState('ID');
+
+  // Custom states for premium features
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeGuitarChord, setActiveGuitarChord] = useState(null);
+  const [projectFilter, setProjectFilter] = useState('All');
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
+  const [guitarStrumming, setGuitarStrumming] = useState(false);
+  const [toastMessage, setToastMessage] = useState(null);
+
+  // Form states
+  const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
+  const [contactSubmitStatus, setContactSubmitStatus] = useState('idle'); // idle, sending, success
+  const [contactSuccessData, setContactSuccessData] = useState(null);
 
   const t = translations[language];
 
@@ -213,11 +430,12 @@ export default function App() {
     { id: 'contact', label: t.navContact },
   ];
 
+  // Splash Screen Sequence
   useEffect(() => {
     if (currentGreetingIndex < greetings.length - 1) {
       const timer = setTimeout(() => {
         setCurrentGreetingIndex(prev => prev + 1);
-      }, 170);
+      }, 150);
       return () => clearTimeout(timer);
     } else {
       const timer = setTimeout(() => {
@@ -226,15 +444,23 @@ export default function App() {
           setShowSplash(false);
         }, 800);
         return () => clearTimeout(closeTimer);
-      }, 350);
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [currentGreetingIndex]);
 
+  // Scroll Progress and Scroll Reveal Observer
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScrollProgress = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        setScrollProgress((window.scrollY / totalHeight) * 100);
+      }
+    };
+
+    const handleActiveSection = () => {
       const sections = ['home', 'about', 'experience', 'projects', 'contact'];
-      const scrollPosition = window.scrollY + 200;
+      const scrollPosition = window.scrollY + 220;
 
       for (const section of sections) {
         const el = document.getElementById(section);
@@ -248,8 +474,29 @@ export default function App() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Scroll reveal intersection observer
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    revealElements.forEach((el) => observer.observe(el));
+
+    window.addEventListener('scroll', handleScrollProgress);
+    window.addEventListener('scroll', handleActiveSection);
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollProgress);
+      window.removeEventListener('scroll', handleActiveSection);
+      revealElements.forEach((el) => observer.unobserve(el));
+    };
   }, []);
 
   const scrollToSection = (id) => {
@@ -261,23 +508,84 @@ export default function App() {
     }
   };
 
+  const showToast = (message) => {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
   const handleCopy = (text, type) => {
-    navigator.clipboard.writeText(text).catch(() => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedText(type);
+      showToast(t.copiedToast);
+      setTimeout(() => setCopiedText(''), 2000);
+    }).catch(() => {
       const tempInput = document.createElement('input');
       tempInput.value = text;
       document.body.appendChild(tempInput);
       tempInput.select();
       document.execCommand('copy');
       document.body.removeChild(tempInput);
+      setCopiedText(type);
+      showToast(t.copiedToast);
+      setTimeout(() => setCopiedText(''), 2000);
     });
-    setCopiedText(type);
-    setTimeout(() => setCopiedText(''), 2000);
   };
+
+  const triggerGuitarChord = (chord) => {
+    setActiveGuitarChord(chord);
+    setGuitarStrumming(true);
+    playGuitarChord(chord);
+    setTimeout(() => {
+      setActiveGuitarChord(null);
+      setGuitarStrumming(false);
+    }, 1500);
+  };
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    if (!contactForm.name || !contactForm.email || !contactForm.message) return;
+
+    setContactSubmitStatus('sending');
+
+    // Simulate database delay of 1.5s
+    setTimeout(() => {
+      const submissions = JSON.parse(localStorage.getItem('portfolio_messages') || '[]');
+      const newSubmission = {
+        ...contactForm,
+        id: Date.now(),
+        date: new Date().toLocaleString()
+      };
+      submissions.push(newSubmission);
+      localStorage.setItem('portfolio_messages', JSON.stringify(submissions));
+
+      setContactSuccessData(newSubmission);
+      setContactSubmitStatus('success');
+      setContactForm({ name: '', email: '', message: '' });
+    }, 1200);
+  };
+
+  const filteredProjects = projectFilter === 'All' 
+    ? projectsData 
+    : projectsData.filter(p => p.category === projectFilter);
 
   const current = greetings[currentGreetingIndex];
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-emerald-500/30 selection:text-emerald-400 relative overflow-x-hidden">
+      
+      {/* ── SCROLL PROGRESS BAR ── */}
+      <div 
+        className="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-emerald-400 via-teal-400 to-indigo-500 z-50 transition-all duration-100" 
+        style={{ width: `${scrollProgress}%` }} 
+      />
+
+      {/* ── TOAST NOTIFICATION ── */}
+      {toastMessage && (
+        <div className="fixed bottom-5 right-5 z-50 bg-emerald-950/90 border border-emerald-500/30 backdrop-blur-xl px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 animate-float">
+          <Sparkles size={18} className="text-emerald-400" />
+          <span className="text-xs font-semibold text-slate-200">{toastMessage}</span>
+        </div>
+      )}
 
       {/* LANGUAGE SELECTOR DESKTOP */}
       <div className="hidden md:flex fixed top-5 right-5 z-50 items-center bg-slate-900/90 backdrop-blur-xl border border-slate-800/70 rounded-full p-1 shadow-2xl">
@@ -323,30 +631,27 @@ export default function App() {
         </div>
       </div>
 
-      {/* BACKGROUND DECORATIONS */}
+      {/* BACKGROUND DECORATIONS (High-End Glows) */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[10%] left-[5%] w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-full bg-indigo-500/5 blur-[120px]" />
-        <div className="absolute bottom-[20%] right-[10%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full bg-emerald-500/5 blur-[150px]" />
-        <div className="absolute top-[60%] left-[50%] -translate-x-1/2 w-[400px] h-[400px] md:w-[600px] md:h-[600px] rounded-full bg-violet-500/3 blur-[180px]" />
+        <div className="absolute top-[8%] left-[5%] w-[350px] h-[350px] md:w-[450px] md:h-[450px] rounded-full bg-indigo-500/10 blur-[130px] animate-pulse-glow" />
+        <div className="absolute bottom-[20%] right-[8%] w-[350px] h-[350px] md:w-[550px] md:h-[550px] rounded-full bg-emerald-500/8 blur-[160px] animate-pulse-glow" />
+        <div className="absolute top-[50%] left-[50%] -translate-x-1/2 w-[400px] h-[400px] md:w-[650px] md:h-[650px] rounded-full bg-violet-500/5 blur-[180px]" />
       </div>
 
-      {/* ── NAVBAR DESKTOP (md+) — top center pill ── */}
+      {/* ── NAVBAR DESKTOP (md+) ── */}
       <nav className="hidden md:block fixed top-5 left-1/2 -translate-x-1/2 z-40">
-        <div className="flex items-center gap-1 bg-slate-900/90 backdrop-blur-xl border border-slate-800/70 rounded-full px-3 py-3 shadow-2xl shadow-black/50">
+        <div className="flex items-center gap-1 bg-slate-900/80 backdrop-blur-xl border border-slate-800/70 rounded-full px-2.5 py-2.5 shadow-2xl shadow-black/65">
           {navItems.map((item) => {
             const active = activeSection === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="relative px-4 py-2 rounded-full text-sm font-semibold tracking-wide transition-all duration-300"
-                style={{
-                  backgroundColor: active ? '#34d399' : 'transparent',
-                  color: active ? '#0f172a' : '#94a3b8',
-                  boxShadow: active ? '0 4px 15px rgba(52,211,153,0.25)' : 'none',
-                }}
-                onMouseEnter={e => { if (!active) { e.currentTarget.style.color = '#fff'; e.currentTarget.style.backgroundColor = 'rgba(51,65,85,0.5)'; } }}
-                onMouseLeave={e => { if (!active) { e.currentTarget.style.color = '#94a3b8'; e.currentTarget.style.backgroundColor = 'transparent'; } }}
+                className={`relative px-4.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-300 ${
+                  active 
+                    ? 'bg-emerald-400 text-slate-950 shadow-lg shadow-emerald-400/20' 
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                }`}
               >
                 {item.label}
               </button>
@@ -355,9 +660,9 @@ export default function App() {
         </div>
       </nav>
 
-      {/* ── NAVBAR MOBILE — top bar with hamburger ── */}
-      <nav className="md:hidden fixed top-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/60">
-        <div className="flex items-center justify-between px-4 py-3">
+      {/* ── NAVBAR MOBILE ── */}
+      <nav className="md:hidden fixed top-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-900/60">
+        <div className="flex items-center justify-between px-4 py-3.5">
           <span className="text-white font-black text-sm tracking-widest">ZURA<span className="text-emerald-400">.</span></span>
           <div className="flex items-center gap-3">
             {/* Language Switcher Mobile */}
@@ -377,7 +682,7 @@ export default function App() {
             </div>
             <button
               onClick={() => setMobileMenuOpen(prev => !prev)}
-              className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800/50"
+              className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-900"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -387,8 +692,8 @@ export default function App() {
 
         {/* Mobile dropdown menu */}
         <div
-          className="overflow-hidden transition-all duration-300"
-          style={{ maxHeight: mobileMenuOpen ? '300px' : '0px' }}
+          className="overflow-hidden transition-all duration-300 bg-slate-950/98 border-b border-slate-900"
+          style={{ maxHeight: mobileMenuOpen ? '320px' : '0px' }}
         >
           <div className="px-4 pb-4 flex flex-col gap-1">
             {navItems.map((item) => {
@@ -412,31 +717,36 @@ export default function App() {
       </nav>
 
       {/* MAIN CONTAINER */}
-      {/* pt-24 on mobile (to clear mobile topbar), pt-28 on md+ (for pill navbar) */}
       <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-24 md:pt-28">
 
-        {/* SECTION 1: HOME */}
-        <section id="home" className="min-h-[85vh] flex flex-col md:flex-row items-center justify-center md:justify-between py-8 md:py-12 gap-10 md:gap-12">
-
-          {/* Photo — on mobile, shown first and smaller */}
+        {/* ── SECTION 1: HOME ── */}
+        <section id="home" className="min-h-[85vh] flex flex-col md:flex-row items-center justify-center md:justify-between py-8 md:py-12 gap-10 md:gap-12 reveal-on-scroll">
+          
+          {/* Photo */}
           <div className="flex justify-center w-full md:flex-1 md:order-2">
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500 to-indigo-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-all duration-500" />
-              {/* Mobile: w-48 h-64, larger on sm+, full size on md+ */}
-              <div className="relative w-48 h-64 sm:w-64 sm:h-80 md:w-72 md:h-96 lg:w-80 lg:h-[420px] bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl hover:border-emerald-500/40 transition-all duration-500">
+              {/* Outer double glowing ring */}
+              <div className="absolute -inset-1 bg-gradient-to-tr from-emerald-400 via-teal-500 to-indigo-600 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-all duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500 to-indigo-500 rounded-3xl opacity-10 group-hover:opacity-20 transition-all duration-700" />
+              
+              <div className="relative w-48 h-64 sm:w-64 sm:h-80 md:w-72 md:h-96 lg:w-80 lg:h-[420px] bg-slate-900 border border-slate-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-emerald-400/40 transition-all duration-500">
                 <img
                   src="/fotohome.png"
                   alt="Zufa Rahmat Ramadhan"
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-slate-950/25 pointer-events-none" />
+                {/* Visual glass gradient sheet */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-slate-950/20 pointer-events-none" />
               </div>
             </div>
           </div>
 
           {/* Text content */}
-          <div className="flex-1 space-y-5 text-center md:text-left md:order-1 w-full mt-4 md:mt-0">
-            <div className="space-y-3">
+          <div className="flex-1 space-y-6 text-center md:text-left md:order-1 w-full mt-4 md:mt-0">
+            <div className="space-y-3.5">
+              <span className="px-3.5 py-1 bg-slate-900 border border-slate-800 text-emerald-400 rounded-full font-mono text-xs font-bold tracking-widest inline-block uppercase shadow-lg shadow-black/30">
+                🚀 Welcome to my space
+              </span>
               <h1 className="text-slate-400 font-sans text-base sm:text-xl tracking-wider">{t.hello}</h1>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.25] sm:leading-[1.2] md:leading-tight">
                 ZUFA RAHMAT<br />
@@ -444,7 +754,8 @@ export default function App() {
                   RAMADHAN
                 </span>
               </h2>
-              <p className="text-lg sm:text-xl md:text-2xl font-bold text-slate-300 tracking-wide font-mono">
+              <p className="text-lg sm:text-xl md:text-2xl font-bold text-slate-300 tracking-wide font-mono flex items-center justify-center md:justify-start gap-2.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
                 {t.fullstack}
               </p>
             </div>
@@ -454,53 +765,82 @@ export default function App() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-2 justify-center md:justify-start">
-              <div className="flex items-center space-x-3">
-                <a href="https://github.com" target="_blank" rel="noreferrer" className="p-3 bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:text-emerald-400 text-slate-300 rounded-xl transition-all duration-300 hover:-translate-y-1">
-                  <Github size={20} />
+              <div className="flex items-center space-x-3 bg-slate-900/60 border border-slate-800/80 p-1.5 rounded-2xl shadow-xl">
+                <a href="https://github.com" target="_blank" rel="noreferrer" className="p-3 bg-slate-950 border border-slate-800/60 hover:border-emerald-500/50 hover:text-emerald-400 text-slate-300 rounded-xl transition-all duration-300 hover:-translate-y-0.5">
+                  <Github size={18} />
                 </a>
-                <a href="https://instagram.com/has.fallenz" target="_blank" rel="noreferrer" className="p-3 bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:text-emerald-400 text-slate-300 rounded-xl transition-all duration-300 hover:-translate-y-1">
-                  <Instagram size={20} />
+                <a href="https://instagram.com/has.fallenz" target="_blank" rel="noreferrer" className="p-3 bg-slate-950 border border-slate-800/60 hover:border-emerald-500/50 hover:text-emerald-400 text-slate-300 rounded-xl transition-all duration-300 hover:-translate-y-0.5">
+                  <Instagram size={18} />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="p-3 bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:text-emerald-400 text-slate-300 rounded-xl transition-all duration-300 hover:-translate-y-1">
-                  <Linkedin size={20} />
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="p-3 bg-slate-950 border border-slate-800/60 hover:border-emerald-500/50 hover:text-emerald-400 text-slate-300 rounded-xl transition-all duration-300 hover:-translate-y-0.5">
+                  <Linkedin size={18} />
                 </a>
               </div>
               <span className="hidden sm:block text-slate-800 font-mono">|</span>
               <button
                 onClick={() => scrollToSection('contact')}
-                className="flex items-center space-x-2 px-6 py-3.5 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold rounded-xl tracking-wider text-sm shadow-lg shadow-emerald-400/10 hover:shadow-emerald-400/25 transition-all duration-300 w-full sm:w-auto justify-center"
+                className="flex items-center space-x-2 px-6 py-3.5 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold rounded-xl tracking-wider text-xs uppercase shadow-xl shadow-emerald-400/10 hover:shadow-emerald-400/25 transition-all duration-300 w-full sm:w-auto justify-center"
               >
                 <span>{t.contactBtn}</span>
-                <ChevronRight size={16} />
+                <ChevronRight size={15} />
               </button>
             </div>
           </div>
         </section>
 
-        {/* SECTION 2: ABOUT */}
-        <section id="about" className="py-16 md:py-24 border-t border-slate-900">
-          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+        {/* ── STATS COUNTER ── */}
+        <section className="py-10 border-t border-slate-900/60 reveal-on-scroll">
+          <div className="glass-panel rounded-3xl p-6 sm:p-8 max-w-4xl mx-auto shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl" />
+            <h3 className="text-xs font-mono font-bold tracking-widest text-slate-500 uppercase text-center mb-6">{t.statsTitle}</h3>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              <div className="space-y-1.5">
+                <span className="block text-2xl sm:text-3xl font-black text-emerald-400 font-mono">3+</span>
+                <span className="block text-xs text-slate-400 font-semibold">{t.statsProjects}</span>
+              </div>
+              <div className="space-y-1.5 border-l border-slate-800/60">
+                <span className="block text-2xl sm:text-3xl font-black text-indigo-400 font-mono">4+</span>
+                <span className="block text-xs text-slate-400 font-semibold">{t.statsCertificates}</span>
+              </div>
+              <div className="space-y-1.5 border-l border-slate-800/60">
+                <span className="block text-2xl sm:text-3xl font-black text-violet-400 font-mono">5</span>
+                <span className="block text-xs text-slate-400 font-semibold">{t.statsSemesters}</span>
+              </div>
+              <div className="space-y-1.5 border-l border-slate-800/60 font-mono">
+                <span className="block text-2xl sm:text-3xl font-black text-teal-400 font-mono">150+</span>
+                <span className="block text-xs text-slate-400 font-semibold">{t.statsCommits}</span>
+              </div>
+            </div>
+          </div>
+        </section>
 
+        {/* ── SECTION 2: ABOUT ── */}
+        <section id="about" className="py-16 md:py-24 border-t border-slate-900/60 reveal-on-scroll">
+          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+            
+            {/* About Image wrapper */}
             <div className="flex justify-center w-full md:flex-1">
               <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-emerald-500 rounded-3xl blur-2xl opacity-15 group-hover:opacity-30 transition-all duration-500" />
-                <div className="relative w-56 h-72 sm:w-72 sm:h-96 md:w-80 md:h-[420px] bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl hover:border-emerald-500/40 transition-all duration-500">
+                <div className="absolute -inset-1 bg-gradient-to-br from-indigo-500 to-emerald-500 rounded-3xl blur-2xl opacity-15 group-hover:opacity-30 transition-all duration-500" />
+                <div className="relative w-56 h-72 sm:w-72 sm:h-96 md:w-80 md:h-[420px] bg-slate-900 border border-slate-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-emerald-500/40 transition-all duration-500">
                   <img
                     src="/fotoabout.png"
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                    alt="About"
+                    className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-700"
+                    alt="About Zura"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-slate-950/25 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-slate-950/20 pointer-events-none" />
                 </div>
               </div>
             </div>
 
-            <div className="flex-1 space-y-6 w-full">
+            {/* About text info */}
+            <div className="flex-grow space-y-6 w-full md:flex-1">
               <div className="space-y-2">
                 <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">{t.aboutSmall}</span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-relaxed">
                   {t.aboutTitle}{" "}
-                  <span className="relative inline-block px-3 py-1 bg-violet-500 rounded-sm">
+                  <span className="relative inline-block px-3 py-1 bg-violet-600 rounded shadow-md shadow-violet-600/20">
                     <span className="relative text-white font-bold text-lg sm:text-2xl">ZURA</span>
                   </span>
                 </h2>
@@ -511,26 +851,98 @@ export default function App() {
                 <p>{t.aboutP2}</p>
                 <p>{t.aboutP3}</p>
               </div>
+
+              {/* Bio Details */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-slate-900 font-mono text-[11px]">
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-500 font-bold">{t.aboutName}</span>
+                  <span className="text-slate-300">Zufa Rahmat Ramadhan</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-500 font-bold">{t.aboutEmail}</span>
+                  <span className="text-slate-300">hasfallenz12@gmail.com</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-500 font-bold">{t.aboutStatus}</span>
+                  <span className="text-emerald-400">{t.aboutStatusVal}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-500 font-bold">{t.aboutLocation}</span>
+                  <span className="text-slate-300">{t.aboutLocationVal}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 🎸 GUITAR WIDGET (PREMIUM FEATURE) */}
+          <div className="mt-16 glass-panel rounded-3xl p-6 sm:p-8 max-w-4xl mx-auto shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-36 h-36 bg-gradient-to-bl from-indigo-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+            
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="space-y-2 md:max-w-md">
+                <div className="flex items-center gap-2 text-emerald-400">
+                  <Music size={18} />
+                  <h3 className="font-extrabold text-white text-base tracking-wide">{t.guitarTitle}</h3>
+                </div>
+                <p className="text-slate-400 text-xs leading-relaxed">{t.guitarDesc}</p>
+              </div>
+
+              {/* Guitar Deck Chord buttons & Wave simulation */}
+              <div className="flex flex-col items-center gap-4 bg-slate-950/70 border border-slate-900 rounded-2xl p-4 sm:p-5 flex-grow max-w-md w-full">
+                
+                {/* Audio Wave Visualizer Simulation */}
+                <div className="flex items-end justify-center gap-1 h-8 w-full px-4 border-b border-slate-900/60 pb-2">
+                  {[...Array(24)].map((_, i) => (
+                    <span 
+                      key={i}
+                      className="w-1 bg-emerald-400/80 rounded-full transition-all duration-300"
+                      style={{
+                        animation: guitarStrumming ? `wave-bar ${0.3 + (i % 5) * 0.15}s ease-in-out infinite` : 'none',
+                        height: guitarStrumming ? 'auto' : '4px',
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <div className="w-full text-center">
+                  <span className="text-[10px] font-mono font-bold tracking-wider text-slate-500 block mb-2">{t.guitarInstruction}</span>
+                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                    {Object.keys(guitarChords).map((chord) => (
+                      <button
+                        key={chord}
+                        onClick={() => triggerGuitarChord(chord)}
+                        className={`py-2 px-3 rounded-lg text-xs font-black font-mono border transition-all duration-300 ${
+                          activeGuitarChord === chord
+                            ? 'bg-emerald-400 border-emerald-400 text-slate-950 shadow-md shadow-emerald-400/20 scale-95'
+                            : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-emerald-500/40 hover:text-emerald-400'
+                        }`}
+                      >
+                        {chord}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* TECH SKILLS GRID */}
-          <div className="mt-16 md:mt-20">
+          <div className="mt-20">
             <div className="text-center mb-10">
               <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">{t.techSmall}</span>
               <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">{t.techTitle}</h3>
-              <p className="text-slate-500 text-sm mt-2">{t.techDesc}</p>
+              <p className="text-slate-500 text-xs mt-2">{t.techDesc}</p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto px-2 sm:px-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 max-w-4xl mx-auto px-2 sm:px-4">
               {techSkills.map((skill) => (
                 <div
                   key={skill.name}
-                  className="group relative bg-slate-900/40 border border-slate-900 hover:border-slate-800 rounded-3xl p-5 sm:p-6 flex flex-col items-center justify-center gap-4 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-black/40 overflow-hidden"
+                  className="group relative bg-slate-900/30 border border-slate-900 hover:border-slate-800 rounded-3xl p-5 sm:p-6 flex flex-col items-center justify-center gap-4 transition-all duration-400 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/50 overflow-hidden"
                 >
                   {/* Glowing background on hover */}
                   <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-[0.06] transition-opacity duration-300 blur-xl pointer-events-none"
+                    className="absolute inset-0 opacity-0 group-hover:opacity-[0.05] transition-opacity duration-300 blur-xl pointer-events-none"
                     style={{
                       backgroundColor: skill.color,
                     }}
@@ -538,211 +950,588 @@ export default function App() {
 
                   {/* Icon Wrapper */}
                   <div
-                    className="relative z-10 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-center transition-all duration-300 group-hover:border-slate-700"
+                    className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-center transition-all duration-300 group-hover:border-slate-700"
                   >
                     {getSkillIcon(skill.name)}
                   </div>
 
-                  {/* Name and color underline */}
-                  <div className="text-center relative z-10 space-y-2">
-                    <h4 className="font-extrabold text-white text-sm sm:text-base tracking-wide group-hover:text-emerald-400 transition-colors duration-300">
+                  {/* Name and level badge */}
+                  <div className="text-center relative z-10 space-y-1">
+                    <h4 className="font-extrabold text-white text-sm tracking-wide group-hover:text-emerald-400 transition-colors duration-300">
                       {skill.name}
                     </h4>
-                    <span
-                      className="block mx-auto w-3 h-0.5 rounded-full transition-all duration-300 group-hover:w-10"
-                      style={{ backgroundColor: skill.color }}
-                    />
+                    <span className="inline-block px-2 py-0.5 bg-slate-950/90 text-slate-500 font-mono text-[9px] font-bold rounded-full group-hover:text-slate-300 transition-colors">
+                      {skill.level}
+                    </span>
+                    <p className="text-[10px] text-slate-500 font-medium leading-relaxed max-w-[140px] pt-1 hidden sm:block">
+                      {skill.desc}
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* SERTIFIKAT */}
-          <div className="mt-16 md:mt-20">
-            <div className="text-center mb-8 md:mb-10">
+          {/* 🏆 SERTIFIKAT */}
+          <div className="mt-20">
+            <div className="text-center mb-10">
               <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">{t.certSmall}</span>
               <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1">{t.certTitle}</h3>
-              <p className="text-slate-500 text-sm mt-2">{t.certDesc}</p>
+              <p className="text-slate-500 text-xs mt-2">{t.certDesc}</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-              {certificates.map((cert) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {certificatesData.map((cert) => (
                 <div
                   key={cert.id}
-                  className="group relative bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden aspect-[4/3] flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/30 hover:shadow-lg"
+                  onClick={() => setSelectedCertificate(cert)}
+                  className="group relative bg-slate-900/35 border border-slate-900 hover:border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-md cursor-pointer hover:shadow-xl hover:shadow-black/30"
                 >
-                  {cert.imageUrl ? (
-                    <img
-                      src={cert.imageUrl}
-                      alt={cert.title.replace('Sertifikat', t.certTitlePrefix)}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center gap-2 text-slate-500 group-hover:text-emerald-400 transition-colors">
-                      <div className="w-12 h-12 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center">
-                        <Award size={24} />
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div 
+                        className="w-9 h-9 rounded-xl flex items-center justify-center bg-slate-950 border border-slate-800 transition-colors group-hover:border-slate-700"
+                        style={{ color: cert.color }}
+                      >
+                        <Award size={18} />
                       </div>
-                      <span className="text-xs font-mono tracking-wider font-semibold">{cert.title.replace('Sertifikat', t.certTitlePrefix)}</span>
+                      <span className="text-[10px] font-mono font-bold text-slate-500 bg-slate-950/50 px-2 py-1 rounded-full">{cert.date}</span>
                     </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                    <span className="text-xs font-semibold text-white">{cert.title.replace('Sertifikat', t.certTitlePrefix)}</span>
+                    <div className="space-y-1">
+                      <h4 className="font-extrabold text-white text-xs sm:text-sm tracking-wide leading-snug group-hover:text-emerald-400 transition-colors duration-300">
+                        {language === 'ID' ? cert.title.ID : cert.title.EN}
+                      </h4>
+                      <p className="text-[10px] text-slate-400 font-medium">{cert.issuer}</p>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 mt-4 border-t border-slate-950/50 flex items-center justify-between text-[9px] font-mono text-slate-500">
+                    <span>ID: {cert.credentialId}</span>
+                    <span className="text-emerald-400 group-hover:underline">{t.viewDetails} →</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-
         </section>
 
-        {/* SECTION 3: EXPERIENCE */}
-        <section id="experience" className="py-16 md:py-24 border-t border-slate-900">
-          <div className="space-y-2 mb-10 md:mb-12 text-center">
+        {/* ── SECTION 3: EXPERIENCE ── */}
+        <section id="experience" className="py-16 md:py-24 border-t border-slate-900/60 reveal-on-scroll">
+          <div className="space-y-2 mb-12 text-center">
             <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">{t.expSmall}</span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white">{t.expTitle}</h2>
           </div>
 
           <div className="max-w-3xl mx-auto space-y-6">
-            <div className="border-l border-slate-800 pl-5 ml-2 space-y-8 relative">
-
-              {[
-                {
-                  title: t.expJobTitle,
-                  company: "Laravel + XAMPP",
-                  date: "2026",
-                  active: true,
-                  desc: t.expJobDesc
-                },
-              ].map((job, i) => (
-                <div key={i} className="relative">
-                  <span className={`absolute -left-[27px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 flex items-center justify-center ${job.active ? 'border-emerald-400' : 'border-slate-800'}`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${job.active ? 'bg-emerald-400' : 'bg-slate-800'}`} />
-                  </span>
-                  <div className="space-y-2">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                      <h4 className="font-bold text-white text-sm sm:text-base">{job.title}</h4>
-                      <span className={`inline-block px-3 py-1 text-xs rounded-full font-mono w-max ${job.active ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-900 text-slate-400'}`}>
-                        {job.date}
-                      </span>
+            <div className="border-l-2 border-slate-900 pl-6 ml-2 space-y-8 relative">
+              
+              {/* College Project Timeline item */}
+              <div className="relative">
+                {/* Glowing pointer ball */}
+                <span className="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-emerald-400 flex items-center justify-center shadow-lg shadow-emerald-400/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                </span>
+                
+                <div className="glass-panel p-6 rounded-2xl shadow-xl space-y-3.5 border-l-2 border-l-emerald-400">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                    <div className="space-y-0.5">
+                      <h4 className="font-extrabold text-white text-base leading-snug">{t.expJobTitle}</h4>
+                      <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
+                        <Database size={13} className="text-indigo-400" />
+                        <span>Laravel & XAMPP DB Server</span>
+                      </div>
                     </div>
-                    <p className="text-xs font-mono text-slate-400">{job.company}</p>
-                    <p className="text-sm text-slate-400">{job.desc}</p>
+                    <span className="px-3.5 py-1 text-2xs font-mono font-bold rounded-full bg-emerald-500/10 text-emerald-400 w-max border border-emerald-500/15">
+                      2026
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 leading-relaxed">{t.expJobDesc}</p>
+                  
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    <span className="px-2 py-0.5 bg-slate-950 text-slate-400 rounded-full font-mono text-[9px]">Laravel API</span>
+                    <span className="px-2 py-0.5 bg-slate-950 text-slate-400 rounded-full font-mono text-[9px]">MySQL Integration</span>
+                    <span className="px-2 py-0.5 bg-slate-950 text-slate-400 rounded-full font-mono text-[9px]">XAMPP Setup</span>
+                    <span className="px-2 py-0.5 bg-slate-950 text-slate-400 rounded-full font-mono text-[9px]">CRUD Engine</span>
                   </div>
                 </div>
-              ))}
+              </div>
 
             </div>
           </div>
         </section>
 
-        {/* SECTION 4: PROJECTS */}
-        <section id="projects" className="py-16 md:py-24 border-t border-slate-900">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 md:mb-12">
-            <div className="space-y-2 text-center sm:text-left">
+        {/* ── SECTION 4: PROJECTS ── */}
+        <section id="projects" className="py-16 md:py-24 border-t border-slate-900/60 reveal-on-scroll">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div className="space-y-2 text-center md:text-left">
               <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase">{t.projSmall}</span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white">{t.projTitle}</h2>
+              <p className="text-slate-500 text-xs">{t.projDesc}</p>
+            </div>
+
+            {/* Filter Tabs (Interactive) */}
+            <div className="flex flex-wrap items-center justify-center gap-1.5 bg-slate-900/75 p-1 rounded-2xl border border-slate-800/80 w-max mx-auto md:mx-0 shadow-lg">
+              {['All', 'React', 'Laravel', 'Python'].map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setProjectFilter(cat)}
+                  className={`px-3 py-1.5 rounded-xl text-2xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                    projectFilter === cat
+                      ? 'bg-emerald-400 text-slate-950 font-black shadow-md'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {cat === 'All' ? t.filterAll : cat}
+                </button>
+              ))}
             </div>
           </div>
 
+          {/* Projects Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {[1, 2, 3].map((n) => (
-              <div key={n} className="group bg-slate-900/40 border border-slate-900 hover:border-emerald-500/30 rounded-2xl p-4 sm:p-5 flex flex-col transition-all duration-300 hover:-translate-y-1 shadow-md">
-                <div className="w-full h-36 sm:h-40 bg-slate-950 rounded-xl mb-4 overflow-hidden border border-slate-800 flex items-center justify-center">
-                  <img src={`/project${n}.jpg`} alt={`Project ${n}`} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+            {filteredProjects.map((proj) => (
+              <div 
+                key={proj.id} 
+                className="group bg-slate-900/30 border border-slate-900 hover:border-slate-800 rounded-2xl p-4.5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 shadow-md hover:shadow-xl hover:shadow-black/45"
+              >
+                <div>
+                  {/* Beautiful Simulated Tech Mockup instead of broken image placeholders */}
+                  <div className="w-full h-36 bg-slate-950 rounded-xl mb-4 overflow-hidden border border-slate-800/60 relative flex flex-col items-center justify-center p-3 select-none">
+                    
+                    {/* Mockup visual patterns */}
+                    {proj.mockupType === 'library' && (
+                      <div className="w-full h-full flex flex-col justify-between text-[8px] font-mono text-emerald-400">
+                        <div className="flex items-center justify-between border-b border-emerald-950 pb-1">
+                          <span>📦 BookVerse v1.0</span>
+                          <span className="text-2xs text-indigo-400">ADMIN PANEL</span>
+                        </div>
+                        <div className="grid grid-cols-3 gap-1 my-1">
+                          <div className="bg-slate-900/60 p-1 rounded border border-slate-800/50">
+                            <span className="block text-slate-500">Books</span>
+                            <span className="text-white font-bold">482</span>
+                          </div>
+                          <div className="bg-slate-900/60 p-1 rounded border border-slate-800/50">
+                            <span className="block text-slate-500">Loans</span>
+                            <span className="text-emerald-400 font-bold">29 Active</span>
+                          </div>
+                          <div className="bg-slate-900/60 p-1 rounded border border-slate-800/50">
+                            <span className="block text-slate-500">Overdue</span>
+                            <span className="text-rose-400 font-bold">3 Alert</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5 bg-slate-900/80 px-1.5 py-1 rounded text-slate-400 border border-slate-800/50">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                          <span>GET /api/v1/catalog/search?q=informatics</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {proj.mockupType === 'music' && (
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        <div className="absolute w-20 h-20 rounded-full border border-dashed border-indigo-500/40 animate-spin" style={{ animationDuration: '10s' }} />
+                        <div className="absolute w-14 h-14 rounded-full bg-slate-900 border border-indigo-400/40 flex items-center justify-center">
+                          <Music size={20} className="text-indigo-400 animate-float" />
+                        </div>
+                        <div className="absolute bottom-1 left-1 right-1 flex items-end justify-between px-2 text-[7px] font-mono text-indigo-300">
+                          <span>Zenith Player</span>
+                          <span>Web Audio Node: connected</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {proj.mockupType === 'ai' && (
+                      <div className="w-full h-full flex flex-col justify-between text-[7px] font-mono text-indigo-400 bg-slate-950 rounded p-1.5">
+                        <div className="flex items-center gap-1 border-b border-indigo-950 pb-1 text-slate-500">
+                          <Terminal size={10} />
+                          <span>python sentiment_analyzer.py --csv reviews.csv</span>
+                        </div>
+                        <div className="space-y-1.5 my-1">
+                          <div className="flex items-center justify-between">
+                            <span className="text-slate-400">Total samples:</span>
+                            <span className="text-white">12,482</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-emerald-400">[+] Positive sentiment:</span>
+                            <span>81.2%</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-rose-400">[-] Negative sentiment:</span>
+                            <span>18.8%</span>
+                          </div>
+                        </div>
+                        <span className="text-2xs text-emerald-400">SUCCESS: accuracy=92.34% [elapsed=4.2s]</span>
+                      </div>
+                    )}
+
+                  </div>
+
+                  <div className="space-y-2">
+                    <h3 className="font-extrabold text-white text-sm sm:text-base group-hover:text-emerald-400 transition-colors leading-snug">
+                      {language === 'ID' ? proj.title.ID : proj.title.EN}
+                    </h3>
+                    <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-2 min-h-[34px]">
+                      {language === 'ID' ? proj.desc.ID : proj.desc.EN}
+                    </p>
+                  </div>
                 </div>
-                <div className="space-y-2 flex-grow">
-                  <h3 className="font-bold text-white text-base group-hover:text-emerald-400 transition-colors">{t.projEmptyTitle}</h3>
-                  <p className="text-xs text-slate-400 leading-relaxed">{t.projEmptyDesc}</p>
+
+                <div className="space-y-3.5 pt-3.5 mt-3.5 border-t border-slate-950/60">
+                  {/* Category tags */}
+                  <div className="flex flex-wrap gap-1">
+                    {proj.tags.map((tag) => (
+                      <span key={tag} className="px-2 py-0.5 bg-slate-950 text-slate-500 rounded font-mono text-[9px] font-semibold border border-slate-800/40">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Actions buttons */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono text-emerald-400/90 font-bold">{language === 'ID' ? proj.stats.ID : proj.stats.EN}</span>
+                    <button
+                      onClick={() => setSelectedProject(proj)}
+                      className="px-3.5 py-1.5 bg-slate-900 border border-slate-800/80 hover:border-emerald-500/30 hover:text-emerald-400 text-slate-300 font-bold rounded-xl text-[10px] uppercase transition-all duration-300 flex items-center gap-1.5"
+                    >
+                      <span>{t.viewDetails}</span>
+                      <ChevronRight size={12} />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-900/50 mt-4" />
               </div>
             ))}
           </div>
         </section>
 
-        {/* SECTION 5: CONTACT */}
-        <section id="contact" className="py-16 md:py-24 border-t border-slate-900">
-          <div className="max-w-4xl mx-auto space-y-10 md:space-y-12">
-
+        {/* ── SECTION 5: CONTACT ── */}
+        <section id="contact" className="py-16 md:py-24 border-t border-slate-900/60 reveal-on-scroll">
+          <div className="max-w-4xl mx-auto space-y-12">
+            
             <div className="space-y-3 text-center max-w-2xl mx-auto">
               <span className="text-xs font-mono font-semibold tracking-widest text-emerald-400 uppercase block">{t.contactSmall}</span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">{t.contactTitle}</h2>
-              <p className="text-slate-400 text-sm leading-relaxed">
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
                 {t.contactDesc}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+              
+              {/* Contact Cards Grid (5 cols) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-4 md:col-span-5">
+                <a href="https://wa.me/6281385280346" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4.5 bg-slate-900/30 border border-slate-900 rounded-2xl hover:border-emerald-500/20 transition-all duration-300 group shadow-md hover:shadow-lg">
+                  <div className="flex items-center space-x-3.5 min-w-0">
+                    <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl flex-shrink-0 border border-emerald-500/15">
+                      <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 12.008 0c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 12.004-11.95 12.004-.003 0-.005 0-.007 0-2.005-.001-3.975-.51-5.729-1.479L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966C16.528 1.975 14.061 1.95 11.43 1.95c-5.438 0-9.863 4.374-9.867 9.802 0 1.714.475 3.393 1.374 4.869l-.997 3.64 3.734-.967z" />
+                      </svg>
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="text-white text-xs sm:text-sm font-bold">WhatsApp</h4>
+                      <span className="text-emerald-400 text-2xs font-mono truncate block">ZURA RAHMAT</span>
+                    </div>
+                  </div>
+                  <ChevronRight size={16} className="text-slate-500 group-hover:text-emerald-400 flex-shrink-0 ml-2" />
+                </a>
 
-              <a href="https://wa.me/6281385280346" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-900 rounded-2xl hover:border-emerald-500/20 transition-all duration-300 group">
-                <div className="flex items-center space-x-3 min-w-0">
-                  <div className="p-2.5 sm:p-3 bg-emerald-500/10 text-emerald-400 rounded-xl flex-shrink-0">
-                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 12.008 0c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 12.004-11.95 12.004-.003 0-.005 0-.007 0-2.005-.001-3.975-.51-5.729-1.479L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966C16.528 1.975 14.061 1.95 11.43 1.95c-5.438 0-9.863 4.374-9.867 9.802 0 1.714.475 3.393 1.374 4.869l-.997 3.64 3.734-.967z" />
-                    </svg>
+                <a href="https://instagram.com/has.fallenz" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4.5 bg-slate-900/30 border border-slate-900 rounded-2xl hover:border-pink-500/20 transition-all duration-300 group shadow-md hover:shadow-lg">
+                  <div className="flex items-center space-x-3.5 min-w-0">
+                    <div className="p-3 bg-pink-500/10 text-pink-400 rounded-xl flex-shrink-0 border border-pink-500/15">
+                      <Instagram size={18} />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="text-white text-xs sm:text-sm font-bold">Instagram</h4>
+                      <span className="text-pink-400 text-2xs font-mono">@has.fallenz</span>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h4 className="text-white text-sm sm:text-base font-bold">WhatsApp</h4>
-                    <span className="text-emerald-400 text-xs font-mono truncate block">ZURA RAHMAT RAMADHAN</span>
-                  </div>
-                </div>
-                <ChevronRight size={18} className="text-slate-500 group-hover:text-emerald-400 flex-shrink-0 ml-2" />
-              </a>
+                  <ChevronRight size={16} className="text-slate-500 group-hover:text-pink-400 flex-shrink-0 ml-2" />
+                </a>
 
-              <a href="https://instagram.com/has.fallenz" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-900 rounded-2xl hover:border-pink-500/20 transition-all duration-300 group">
-                <div className="flex items-center space-x-3 min-w-0">
-                  <div className="p-2.5 sm:p-3 bg-pink-500/10 text-pink-400 rounded-xl flex-shrink-0">
-                    <Instagram size={20} />
+                <div className="flex items-center justify-between p-4.5 bg-slate-900/30 border border-slate-900 rounded-2xl hover:border-indigo-500/20 transition-all duration-300 shadow-md">
+                  <div className="flex items-center space-x-3.5 min-w-0 flex-1 mr-2">
+                    <div className="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl flex-shrink-0 border border-indigo-500/15">
+                      <Mail size={18} />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="text-white text-xs sm:text-sm font-bold">Email</h4>
+                      <span className="text-indigo-400 text-2xs font-mono block truncate">hasfallenz12@gmail.com</span>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h4 className="text-white text-sm sm:text-base font-bold">Instagram</h4>
-                    <span className="text-pink-400 text-xs font-mono">@has.fallenz</span>
-                  </div>
+                  <button
+                    onClick={() => handleCopy('hasfallenz12@gmail.com', 'email')}
+                    className="text-2xs font-mono bg-slate-950 border border-slate-800 hover:border-indigo-500/30 px-2.5 py-1.5 rounded-xl text-slate-400 hover:text-white transition-all active:scale-95 flex-shrink-0"
+                  >
+                    {copiedText === 'email' ? t.copied : t.copy}
+                  </button>
                 </div>
-                <ChevronRight size={18} className="text-slate-500 group-hover:text-pink-400 flex-shrink-0 ml-2" />
-              </a>
 
-              <div className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-800 rounded-2xl hover:border-indigo-500/20 transition-all duration-300">
-                <div className="flex items-center space-x-3 min-w-0 flex-1 mr-2">
-                  <div className="p-2.5 sm:p-3 bg-indigo-500/10 text-indigo-400 rounded-xl flex-shrink-0">
-                    <Mail size={20} />
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4.5 bg-slate-900/30 border border-slate-900 rounded-2xl hover:border-blue-500/20 transition-all duration-300 group shadow-md hover:shadow-lg">
+                  <div className="flex items-center space-x-3.5 min-w-0">
+                    <div className="p-3 bg-blue-500/10 text-blue-400 rounded-xl flex-shrink-0 border border-blue-500/15">
+                      <Linkedin size={18} />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="text-white text-xs sm:text-sm font-bold">LinkedIn</h4>
+                      <span className="text-blue-400 text-2xs font-mono">Zufa Rahmat Ramadhan</span>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h4 className="text-white text-sm sm:text-base font-bold">Email</h4>
-                    <span className="text-indigo-400 text-xs font-mono block truncate">hasfallenz12@gmail.com</span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => handleCopy('hasfallenz12@gmail.com', 'email')}
-                  className="text-xs font-mono bg-slate-950 border border-slate-800 hover:border-indigo-500/30 px-2.5 py-1.5 rounded-xl text-slate-400 hover:text-white transition-all active:scale-95 flex-shrink-0"
-                >
-                  {copiedText === 'email' ? t.copied : t.copy}
-                </button>
+                  <ChevronRight size={16} className="text-slate-500 group-hover:text-blue-400 flex-shrink-0 ml-2" />
+                </a>
               </div>
 
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="flex items-center justify-between p-4 bg-slate-900/30 border border-slate-800 rounded-2xl hover:border-blue-500/20 transition-all duration-300 group">
-                <div className="flex items-center space-x-3 min-w-0">
-                  <div className="p-2.5 sm:p-3 bg-blue-500/10 text-blue-400 rounded-xl flex-shrink-0">
-                    <Linkedin size={20} />
+              {/* Interactive Contact Form Container (7 cols) */}
+              <div className="md:col-span-7 bg-slate-900/30 border border-slate-900/90 rounded-3xl p-6 sm:p-8 shadow-2xl relative">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
+
+                {contactSubmitStatus === 'success' ? (
+                  <div className="text-center py-6 space-y-4 animate-float">
+                    <div className="w-14 h-14 bg-emerald-500/15 text-emerald-400 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30 shadow-lg">
+                      <Check size={28} />
+                    </div>
+                    <h3 className="text-lg font-black text-white">{t.contactSuccessTitle}</h3>
+                    <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">{t.contactSuccessDesc}</p>
+                    
+                    {contactSuccessData && (
+                      <div className="bg-slate-950/80 border border-slate-900 rounded-2xl p-4 text-left text-xs space-y-2 mt-4 max-w-md mx-auto">
+                        <div className="flex items-center justify-between text-2xs text-slate-500 border-b border-slate-900 pb-1.5 font-mono">
+                          <span>ID: {contactSuccessData.id}</span>
+                          <span>{contactSuccessData.date}</span>
+                        </div>
+                        <p className="text-slate-300"><strong className="text-slate-500 font-mono">From:</strong> {contactSuccessData.name} ({contactSuccessData.email})</p>
+                        <p className="text-slate-400 italic">"{contactSuccessData.message}"</p>
+                      </div>
+                    )}
+
+                    <button 
+                      onClick={() => setContactSubmitStatus('idle')}
+                      className="px-6 py-2 bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-slate-300 font-bold rounded-xl text-xs uppercase transition-all duration-300"
+                    >
+                      Kirim Pesan Lain
+                    </button>
                   </div>
-                  <div className="min-w-0">
-                    <h4 className="text-white text-sm sm:text-base font-bold">LinkedIn</h4>
-                    <span className="text-blue-400 text-xs font-mono">Zufa Rahmat Ramadhan</span>
-                  </div>
-                </div>
-                <ChevronRight size={18} className="text-slate-500 group-hover:text-blue-400 flex-shrink-0 ml-2" />
-              </a>
+                ) : (
+                  <form onSubmit={handleContactSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <label className="text-2xs font-mono font-bold text-slate-400 uppercase tracking-wider">Nama</label>
+                        <input
+                          type="text"
+                          required
+                          value={contactForm.name}
+                          onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
+                          placeholder={t.contactNamePlaceholder}
+                          className="w-full bg-slate-950 border border-slate-850/80 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-emerald-400/50 transition-colors"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-2xs font-mono font-bold text-slate-400 uppercase tracking-wider">Email</label>
+                        <input
+                          type="email"
+                          required
+                          value={contactForm.email}
+                          onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
+                          placeholder={t.contactEmailPlaceholder}
+                          className="w-full bg-slate-950 border border-slate-850/80 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-emerald-400/50 transition-colors"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-2xs font-mono font-bold text-slate-400 uppercase tracking-wider">Pesan Anda</label>
+                      <textarea
+                        required
+                        rows="4"
+                        value={contactForm.message}
+                        onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
+                        placeholder={t.contactMessagePlaceholder}
+                        className="w-full bg-slate-950 border border-slate-850/80 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-emerald-400/50 transition-colors resize-none"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={contactSubmitStatus === 'sending'}
+                      className="w-full py-3.5 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-black rounded-xl text-xs uppercase tracking-widest shadow-lg shadow-emerald-400/10 hover:shadow-emerald-400/25 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {contactSubmitStatus === 'sending' ? t.contactSendingBtn : t.contactSubmitBtn}
+                    </button>
+                  </form>
+                )}
+              </div>
 
             </div>
+
           </div>
         </section>
 
         {/* Footer */}
-        <footer className="py-8 text-center border-t border-slate-900">
+        <footer className="py-8 text-center border-t border-slate-900/60">
           <p className="text-slate-600 text-xs font-mono">© 2026 Zufa Rahmat Ramadhan. {language === 'ID' ? 'Hak cipta dilindungi undang-undang.' : 'All rights reserved.'}</p>
         </footer>
       </main>
+
+      {/* ── PROJECT DETAIL MODAL ── */}
+      {selectedProject && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl relative animate-float">
+            
+            {/* Modal header/cover visual */}
+            <div className="h-28 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-indigo-500/20 border-b border-slate-800 flex items-center justify-between p-6">
+              <div>
+                <span className="text-[9px] font-mono font-bold text-emerald-400 bg-slate-950 px-2 py-0.5 rounded-full uppercase tracking-wider">{selectedProject.category} Project</span>
+                <h3 className="font-extrabold text-white text-base sm:text-lg tracking-wide leading-snug mt-1">
+                  {language === 'ID' ? selectedProject.title.ID : selectedProject.title.EN}
+                </h3>
+              </div>
+              <button 
+                onClick={() => setSelectedProject(null)}
+                className="p-1.5 rounded-lg bg-slate-950/80 border border-slate-850 hover:border-slate-700 text-slate-400 hover:text-white transition-colors"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 space-y-4 text-xs">
+              <div className="space-y-1.5">
+                <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">Deskripsi Lengkap</span>
+                <p className="text-slate-300 leading-relaxed">
+                  {language === 'ID' ? selectedProject.longDesc.ID : selectedProject.longDesc.EN}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 bg-slate-950/40 border border-slate-950 rounded-2xl p-4.5">
+                <div>
+                  <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">Metrik Proyek</span>
+                  <span className="text-slate-200 font-bold font-mono">{language === 'ID' ? selectedProject.stats.ID : selectedProject.stats.EN}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">Kategori</span>
+                  <span className="text-indigo-400 font-bold font-mono uppercase">{selectedProject.category}</span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">Teknologi Terkait</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedProject.tags.map((tag) => (
+                    <span key={tag} className="px-2.5 py-1 bg-slate-950 text-slate-400 border border-slate-800 rounded font-mono text-[9px]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal actions */}
+            <div className="p-6 bg-slate-950 border-t border-slate-850 flex items-center justify-end gap-2.5">
+              <a 
+                href={selectedProject.githubUrl} 
+                target="_blank" 
+                rel="noreferrer"
+                className="px-4.5 py-2.5 bg-slate-900 border border-slate-850/80 hover:border-slate-700 text-slate-300 hover:text-white rounded-xl text-[10px] font-bold uppercase transition-all duration-300 flex items-center gap-1.5"
+              >
+                <Github size={13} />
+                <span>{t.githubBtn}</span>
+              </a>
+              <a 
+                href={selectedProject.demoUrl} 
+                className="px-4.5 py-2.5 bg-emerald-400 hover:bg-emerald-300 text-slate-950 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-300 flex items-center gap-1.5 shadow-md shadow-emerald-400/10"
+              >
+                <ExternalLink size={13} />
+                <span>{t.demoBtn}</span>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* ── CERTIFICATE LIGHTBOX MODAL ── */}
+      {selectedCertificate && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-slate-950/85 backdrop-blur-md animate-fade-in">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full overflow-hidden shadow-2xl relative animate-float">
+            
+            <div className="absolute top-4 right-4 z-10">
+              <button 
+                onClick={() => setSelectedCertificate(null)}
+                className="p-1.5 rounded-lg bg-slate-950/80 border border-slate-850 hover:border-slate-700 text-slate-400 hover:text-white transition-colors"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Certificate visual render */}
+            <div className="bg-slate-950 p-6 flex flex-col justify-between aspect-[4/3] relative border-b border-slate-800 overflow-hidden">
+              {/* Badge glows */}
+              <div 
+                className="absolute -top-12 -right-12 w-28 h-28 rounded-full blur-3xl opacity-20"
+                style={{ backgroundColor: selectedCertificate.color }}
+              />
+
+              <div className="flex items-start justify-between">
+                <span className="text-[8px] font-mono tracking-widest text-slate-500 uppercase">OFFICIAL DOCUMENT</span>
+                <div 
+                  className="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-900 border border-slate-850"
+                  style={{ color: selectedCertificate.color }}
+                >
+                  <Award size={20} />
+                </div>
+              </div>
+
+              <div className="space-y-3.5 my-auto text-center">
+                <span className="text-[9px] font-mono tracking-wider font-bold text-emerald-400 uppercase">CERTIFICATE OF COMPLETION</span>
+                <h3 className="font-extrabold text-white text-base sm:text-lg tracking-wide leading-snug">
+                  {language === 'ID' ? selectedCertificate.title.ID : selectedCertificate.title.EN}
+                </h3>
+                <p className="text-slate-400 text-xs italic">Presented to: <strong>Zufa Rahmat Ramadhan</strong></p>
+              </div>
+
+              <div className="flex items-end justify-between text-[8px] font-mono text-slate-500 border-t border-slate-900 pt-3">
+                <div className="text-left">
+                  <span>ISSUER: {selectedCertificate.issuer}</span>
+                  <br />
+                  <span>DATE: {selectedCertificate.date}</span>
+                </div>
+                <div className="text-right">
+                  <span>CREDENTIAL ID:</span>
+                  <br />
+                  <span className="text-slate-400">{selectedCertificate.credentialId}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Certificate details */}
+            <div className="p-6 space-y-4">
+              <div className="space-y-2">
+                <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">Keahlian yang Dipelajari</span>
+                <div className="flex flex-wrap gap-1">
+                  {selectedCertificate.skills.map((skill) => (
+                    <span 
+                      key={skill} 
+                      className="px-2.5 py-1 bg-slate-950 text-slate-300 font-mono text-[9px] rounded-lg border border-slate-850/60"
+                    >
+                      ✓ {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Close actions */}
+            <div className="p-4 bg-slate-950 border-t border-slate-850 flex justify-end">
+              <button 
+                onClick={() => setSelectedCertificate(null)}
+                className="px-5 py-2 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 font-bold rounded-xl text-xs uppercase transition-all duration-300"
+              >
+                {t.closeBtn}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
